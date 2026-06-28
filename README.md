@@ -5554,9 +5554,15 @@ Status: `[ ]` = not started, `[~]` = in progress, `[x]` = done
 [ ] 54.30 Multi-language Social Simulation (agents post in Bahasa, Chinese, English, etc.)
 [ ] 54.31 Session Replay & User Behavior (PostHog / LogRocket / Microsoft Clarity)
 [ ] 54.32 Offline / PWA Readiness (service worker, offline prediction queue)
-[ ] 54.33 Audit Log Table (who ran what prediction, when, result, mode)
+[x] 54.33 Audit Log Table — ✅ DONE
+    - swarm_audit_log table + db/schema.ts ✅
+    - services/audit-log.ts — 14 audit action types ✅
+    - Convenience helpers: audit.projectCreated(), audit.simulationCompleted(), etc. ✅
 [ ] 54.34 Cost Tracking Dashboard (AI token spend per user/project/month, per mode)
-[ ] 54.35 Webhook Notifications (simulation completed → POST to user's endpoint)
+[x] 54.35 Webhook Notifications — ✅ DONE
+    - services/webhook.ts — register, remove, fire ✅
+    - notifySimulationCompleted() + notifySimulationFailed() ✅
+    - Webhook secret support + 10s timeout ✅
 [ ] 54.36 Custom Scoring Formulas (enterprise users can adjust weight coefficients)
 [ ] 54.37 Simulation Replay (visual playback of social + investment simulation steps)
 [ ] 54.38 Prediction Marketplace (users validate predictions, earn reputation)
@@ -5619,9 +5625,14 @@ Status: `[ ]` = not started, `[~]` = in progress, `[x]` = done
 
 ```text
 [ ] 54.22 End-to-End Tests (Playwright) — dual-mode flows
-[ ] 54.23 OpenAPI / Swagger Spec — from Zod schemas
+[x] 54.23 OpenAPI / Swagger Spec — openapi.json ✅ DONE
+    - Full Swagger 3.1 spec ✅
+    - 19 endpoints documented ✅
+    - Mode-specific schemas (social + investment + political) ✅
 [ ] 54.24 Dark Mode Support — Tailwind dark: audit
-[ ] 54.25 Code Review Checklist — PR template
+[x] 54.25 Code Review Checklist — .github/pull_request_template.md ✅ DONE
+    - 12-section checklist (quality, validation, DB, API, dual-mode, security, testing) ✅
+    - Type-specific checks for Swarm Deeportal conventions ✅
 ```
 
 ### API Endpoints (14 Total)
