@@ -1749,8 +1749,117 @@ Status: `[ ]` = not started, `[~]` = in progress, `[x]` = done
 
 ```text
 ✅ 18.11 Political prediction types — already in swarm types
-[ ] 18.1 Political DB schema — 2 hours, no external dependency
-[ ] 18.5 Political scoring engine — 3 hours, pure calculation
-[ ] 18.10 Frontend types — 30 min, TypeScript only
+✅ 18.1 Political DB schema — done
+✅ 18.5 Political scoring engine — done
+✅ 18.10 Frontend types — done
 ```
+
+---
+
+# 19. Enrichment Opportunities — What Else Can Be Built
+
+## 19.1 Additional Free Data Sources
+
+| Source | URL | What You Get | Use Case |
+|--------|-----|-------------|----------|
+| **Google Trends** | https://trends.google.com | Search interest per region per topic | Issue popularity, candidate name search volume |
+| **Wikipedia Pageviews** | https://pageviews.wmcloud.org | Daily pageviews per article | Candidate/public figure interest tracking |
+| **News API (free tier)** | https://newsapi.org | 100 req/day, headlines + articles | Local issue detection, media sentiment |
+| **GKG (GDELT)** | https://www.gdeltproject.org | Global news events database | Political event detection per region |
+| **OpenStreetMap** | https://overpass-api.de | POI, infrastructure data | Infrastructure gap analysis per kelurahan |
+
+## 19.2 Advanced Analytics (Phase 2)
+
+### Regional Clustering
+```text
+Group kelurahan by similarity across 5+ dimensions:
+  • Demographics (age, gender, education)
+  • Socioeconomic (poverty, HDI, expenditure)
+  • Electoral (swing index, turnout, competitiveness)
+  • Infrastructure (Podes data)
+  • Issues (local issue types)
+
+Output: "Kelurahan A,B,C share profile with D,E,F → target together"
+```
+
+### Historical Pattern Analysis
+```text
+Track election results across 3+ cycles (2014-2019-2024):
+  • Party vote share trajectory (rising/declining/stable)
+  • Swing direction (urbanizing? becoming more competitive?)
+  • Turnout trend (increasing/decreasing engagement)
+
+Output: "Dapil X: Gerindra rising +8%/cycle, PDIP declining -3%/cycle → swing opportunity"
+```
+
+### Demographic-Political Correlation
+```text
+Cross-reference demographics with election results:
+  • Young population (15-24) → higher swing index? 
+  • Higher HDI → higher turnout?
+  • Higher informal worker % → certain party preference?
+
+Output: "Kelurahan with >40% youth → 2x more likely to swing"
+```
+
+## 19.3 Advanced Scoring (Phase 3)
+
+| Score | Formula | Data Needed |
+|-------|---------|-------------|
+| **Candidate-Region Fit** | Party history × demos × issues match | KPU + BPS + issues |
+| **Campaign ROI** | Swingable voters / campaign cost estimate | Swing index × population density |
+| **Media Sentiment** | News sentiment per region per candidate | News API + GDELT |
+| **Infrastructure Gap** | (Needed - Available) / Population | Podes + OSM |
+| **Policy Impact** | Population affected × severity × feasibility | Podes + regulation DB |
+
+## 19.4 Real-Time Monitoring (Phase 4)
+
+```text
+Quick Count / Real Count Integration:
+  • KPU Sirekap API (when available during elections)
+  • Compare quick count vs simulation predictions
+  • Real-time adjustment of electability forecasts
+
+Social Listening:
+  • Track candidate mentions per platform per region
+  • Sentiment shift detection (pre/post debate)
+  • Virality alerts for political content
+```
+
+## 19.5 Cross-Reference with Population Data
+
+| Population Data | Political Use |
+|----------------|---------------|
+| `population-data.md` — region demographics | Base for electoral map calculations |
+| Age group distribution | Youth vote potential, elderly turnout |
+| Expenditure per capita | Campaign message targeting (economy vs welfare) |
+| Education levels | Issue communication strategy |
+| Urban/rural split | Different campaign approaches |
+
+> Connect: `political-data.md` ↔ `population-data.md` ↔ `swarm-deeportal` prediction engine
+
+## 19.6 Future Checklist (Phase 2-4)
+
+```text
+[ ] 19.6.1 Google Trends integration — weekly search interest pull
+[ ] 19.6.2 News API + GDELT — political event detection pipeline
+[ ] 19.6.3 Regional clustering algorithm — K-means on 5+ dimensions
+[ ] 19.6.4 Historical pattern analysis — 3-cycle trend detection
+[ ] 19.6.5 Candidate-Region Fit score — multi-factor matching
+[ ] 19.6.6 Real-time monitoring — KPU Sirekap integration
+[ ] 19.6.7 Media sentiment analysis — per region per candidate
+[ ] 19.6.8 Cross-reference pipeline — population + political data join
+```
+
+## 19.7 Current Completion Status
+
+| Phase | Status | Items Done |
+|-------|--------|-----------|
+| Phase 1 — Foundation | ✅ 100% | 12/12 tasks |
+| Phase 2 — Analytics | ⏳ Not started | 0/4 |
+| Phase 3 — Advanced Scoring | ⏳ Not started | 0/5 |
+| Phase 4 — Real-time | ⏳ Not started | 0/4 |
+| **Total** | | **12 done, 13 planned** |
+
+> **Phase 1 is complete.** Phases 2-4 can begin when Podes data, KPU Sirekap, or News API keys become available.
 
