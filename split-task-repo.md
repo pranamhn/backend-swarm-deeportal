@@ -19,7 +19,7 @@
                ▼                                  ▼
 ┌──────────────────────────────┐  ┌───────────────────────────────┐
 │  backend-deeportal           │  │  backend-swarm-deeportal       │
-│  Python · Flask · SQLite     │  │  TypeScript · Express · Redis  │
+│  Python · Flask · MySQL     │  │  TypeScript · Express · Redis  │
 │  Port 8080                   │  │  Port 5002                     │
 │                              │  │                                │
 │  Core data engine:           │  │  AI prediction engine:          │
@@ -35,7 +35,7 @@
 |---|---|---|---|
 | **Language** | Python 3 | TypeScript 5 | TypeScript 5 |
 | **Framework** | Flask | Express.js | Next.js 16 |
-| **Database** | SQLite (file-based) | PostgreSQL + pgvector | — |
+| **Database** | MySQL | PostgreSQL + pgvector | — |
 | **Queue/Cache** | — | Redis + BullMQ | — |
 | **AI** | DeepSeek, Claude, Codex | DeepSeek (primary), GPT-4o | — |
 | **Port** | 8080 | 5002 | 3000 |
@@ -73,7 +73,7 @@ orchestrator/
   config.py                    # Environment-based settings
 
 holdco/
-  db.py                        # SQLite schema + connection (SCHEMA_VERSION=5)
+  db.py                        # MySQL schema + connection (SCHEMA_VERSION=5)
   population_schema.py         # Population DB schema (8 tables) 🆕
   population_quality.py        # Data quality scoring 🆕
   population_ranking.py        # Region ranking algorithm 🆕
@@ -257,7 +257,7 @@ Browser → Next.js :3000 → /v1/swarm/projects → Express :5002 → PostgreSQ
 
 ### Request Flow: User visits /companies
 ```
-Browser → Next.js :3000 → /api/v1/companies (rewrite) → Flask :8080 → SQLite
+Browser → Next.js :3000 → /api/v1/companies (rewrite) → Flask :8080 → MySQL
 ```
 
 ### Real-time Flow: Ingestion complete
@@ -274,7 +274,7 @@ Browser → POST /v1/swarm/simulation/:id/start → Express :5002 → BullMQ que
 
 ### Population Flow: User builds segment
 ```
-Browser → POST /api/v1/population/segment/build → Next.js rewrite → Flask :8080 → SQLite
+Browser → POST /api/v1/population/segment/build → Next.js rewrite → Flask :8080 → MySQL
 ```
 
 ---

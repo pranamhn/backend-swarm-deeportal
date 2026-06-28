@@ -1950,7 +1950,7 @@ Status: `[ ]` = not started, `[~]` = in progress, `[x]` = done
 
 ```text
 [x] 22.8 Population Database Tables ✅ DONE
-    - holdco/population_schema.py — 8 SQLite tables ✅
+    - holdco/population_schema.py — 8 MySQL tables ✅
     - regions, population_data, age_groups, socioeconomic, education, employment, sources ✅ — migrations/
     - regions (id, kode_bps, name, type, parent_id, area_km2, geojson)
     - population_data (region_id, year, total, male, female, density, growth_rate)
