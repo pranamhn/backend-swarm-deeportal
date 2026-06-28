@@ -1988,7 +1988,9 @@ Status: `[ ]` = not started, `[~]` = in progress, `[x]` = done
 ## 🔄 Swarm Engine (backend-swarm-deeportal)
 
 ```text
-[ ] 22.13 Population Agent Generator — services/population-agents.ts
+[x] 22.13 Population Agent Generator ✅ DONE
+    - services/population-agents.ts ✅
+    - 6 agent types with region-aware attribute generation ✅ — services/population-agents.ts
     - Generate synthetic population agents from demographic DB
     - Agent types: urban_worker, rural_farmer, student, professional, informal_worker, entrepreneur
     - Attributes: age_group, income_proxy, occupation, mobility_need, digital_adoption, price_sensitivity, policy_sensitivity
@@ -1996,7 +1998,9 @@ Status: `[ ]` = not started, `[~]` = in progress, `[x]` = done
     - Integration with existing agent-generator.ts
     - Estimated: ~200 lines
 
-[ ] 22.14 Population Swarm Simulation — services/population-simulation.ts
+[x] 22.14 Population Swarm Simulation ✅ DONE
+    - services/population-simulation.ts ✅
+    - 4 scenario types, adoption rate, demand shift, sentiment change ✅ — services/population-simulation.ts
     - Run population agent simulation for a given scenario
     - Scenario types: policy_change, market_entry, price_change, regulatory_shift
     - Each agent reacts based on attributes + scenario parameters
@@ -2004,7 +2008,9 @@ Status: `[ ]` = not started, `[~]` = in progress, `[x]` = done
     - SSE progress updates per loop
     - Estimated: ~250 lines
 
-[ ] 22.15 Population-Swarm Integration — services/population-integration.ts
+[x] 22.15 Population-Swarm Integration ✅ DONE
+    - services/population-integration.ts ✅
+    - Enriches 8 prediction types with population context ✅ — services/population-integration.ts
     - Connect population data to existing prediction types
     - market_opportunity: inject regional population coverage
     - funding_signal: validate market size with population data
@@ -2016,7 +2022,9 @@ Status: `[ ]` = not started, `[~]` = in progress, `[x]` = done
     - revenue_potential: size consumer segments
     - Estimated: ~200 lines
 
-[ ] 22.16 Population Prediction Types — types/swarm.ts (extend)
+[x] 22.16 Population Prediction Types ✅ DONE
+    - 4 new types added to types/swarm.ts ✅
+    - population_intelligence category ✅ — types/swarm.ts (extend)
     - Add population_intelligence category
     - Add 4 new prediction types:
       - regional_opportunity (region ranking for market entry)
@@ -2027,14 +2035,17 @@ Status: `[ ]` = not started, `[~]` = in progress, `[x]` = done
     - Add Zod validation for new types
     - Estimated: ~80 lines
 
-[ ] 22.17 Population Scoring Formulas — services/scoring-engine.ts (extend)
+[x] 22.17 Population Scoring Formulas ✅ DONE
+    - 4 weighted formulas in services/scoring-engine.ts ✅ — services/scoring-engine.ts (extend)
     - regional_opportunity: population_size(0.25), density(0.15), hdi(0.15), expenditure_pc(0.20), growth_rate(0.15), urbanization(0.10)
     - demand_forecast: target_segment_size(0.30), income_proxy(0.25), digital_adoption(0.20), mobility(0.15), competition(0.10)
     - consumer_segment: addressable_population(0.30), purchasing_power(0.25), accessibility(0.20), behavior_fit(0.15), growth_potential(0.10)
     - urbanization_impact: current_density(0.25), growth_rate(0.25), infrastructure_gap(0.20), migration_pressure(0.15), environmental_risk(0.15)
     - Estimated: ~80 lines
 
-[ ] 22.18 Population Data API Routes — routes/population.ts
+[x] 22.18 Population Data API Routes ✅ DONE
+    - routes/population.ts — 5 endpoints ✅
+    - Region profile, ranking, agents generate, simulate, enrich ✅ — routes/population.ts
     - GET /population/region/:id — region demographics + scoring
     - GET /population/ranking — market opportunity ranking
     - POST /population/simulate — run population swarm sim

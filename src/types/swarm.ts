@@ -9,6 +9,7 @@ export type ModeCategory =
   | "financial_intelligence"
   | "hr_talent_intelligence"
   | "legal_compliance_intelligence"
+  | "population_intelligence"
   | "scenario_simulation";
 
 // ── Mode ──
@@ -29,6 +30,8 @@ export type PredictionType =
   | "talent_acquisition" | "retention_risk" | "salary_benchmark" | "team_scalability"
   // Legal & Compliance Intelligence 🆕
   | "litigation_risk" | "regulatory_fine" | "compliance_gap" | "contract_risk"
+  // Population Intelligence 🆕
+  | "regional_opportunity" | "demand_forecast" | "consumer_segment" | "urbanization_impact"
   // Legacy (backward compat)
   | "funding" | "acquisition" | "ipo" | "market_dynamics" | "pricing" | "customer_behavior" | "competitive_response";
 
@@ -66,6 +69,11 @@ export const MODE_CATEGORY_MAP: Record<PredictionType, ModeCategory> = {
   regulatory_fine: "legal_compliance_intelligence",
   compliance_gap: "legal_compliance_intelligence",
   contract_risk: "legal_compliance_intelligence",
+  // Population Intelligence 🆕
+  regional_opportunity: "population_intelligence",
+  demand_forecast: "population_intelligence",
+  consumer_segment: "population_intelligence",
+  urbanization_impact: "population_intelligence",
   // Legacy
   funding: "startup_intelligence",
   acquisition: "startup_intelligence",
@@ -101,6 +109,11 @@ export const MODE_LABELS: Record<PredictionType, { label: string; icon: string; 
   regulatory_fine: { label: "💰 Regulatory Fine", icon: "💰", category: "legal_compliance_intelligence" },
   compliance_gap: { label: "🔍 Compliance Gap", icon: "🔍", category: "legal_compliance_intelligence" },
   contract_risk: { label: "📝 Contract Risk", icon: "📝", category: "legal_compliance_intelligence" },
+  // Population Intelligence 🆕
+  regional_opportunity: { label: "🗺️ Regional Opportunity", icon: "🗺️", category: "population_intelligence" },
+  demand_forecast: { label: "📊 Demand Forecast", icon: "📊", category: "population_intelligence" },
+  consumer_segment: { label: "👥 Consumer Segment", icon: "👥", category: "population_intelligence" },
+  urbanization_impact: { label: "🏙️ Urbanization Impact", icon: "🏙️", category: "population_intelligence" },
   // Legacy
   funding: { label: "💰 Funding Prediction", icon: "💰", category: "startup_intelligence" },
   acquisition: { label: "🤝 Acquisition Fit", icon: "🤝", category: "startup_intelligence" },

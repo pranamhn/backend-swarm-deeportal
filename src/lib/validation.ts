@@ -13,6 +13,8 @@ export const predictionTypeSchema = z.enum([
   "talent_acquisition", "retention_risk", "salary_benchmark", "team_scalability",
   // Legal & Compliance 🆕
   "litigation_risk", "regulatory_fine", "compliance_gap", "contract_risk",
+  // Population Intelligence 🆕
+  "regional_opportunity", "demand_forecast", "consumer_segment", "urbanization_impact",
   // Legacy (backward compat)
   "funding", "acquisition", "ipo", "market_dynamics", "pricing", "customer_behavior", "competitive_response",
 ]);

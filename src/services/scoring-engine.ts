@@ -301,6 +301,36 @@ function getWeights(predictionType: string): Record<string, number> {
       "IP Ownership Clarity": 0.15,
       "Termination Flexibility": 0.10,
     },
+    // Population Intelligence 🆕
+    regional_opportunity: {
+      "Population Size": 0.25,
+      "Population Density": 0.15,
+      "Human Development Index": 0.15,
+      "Expenditure per Capita": 0.20,
+      "Population Growth Rate": 0.15,
+      "Urbanization Rate": 0.10,
+    },
+    demand_forecast: {
+      "Target Segment Size": 0.30,
+      "Income Proxy": 0.25,
+      "Digital Adoption Rate": 0.20,
+      "Population Mobility": 0.15,
+      "Competitive Intensity": 0.10,
+    },
+    consumer_segment: {
+      "Addressable Population": 0.30,
+      "Purchasing Power": 0.25,
+      "Accessibility": 0.20,
+      "Behavior Fit": 0.15,
+      "Growth Potential": 0.10,
+    },
+    urbanization_impact: {
+      "Current Density": 0.25,
+      "Growth Rate": 0.25,
+      "Infrastructure Gap": 0.20,
+      "Migration Pressure": 0.15,
+      "Environmental Risk": 0.15,
+    },
     // Legacy
     funding: { "Revenue Traction": 0.25, "Growth Rate": 0.20, "Market Size": 0.15, "Founder Quality": 0.15, "Unit Economics": 0.10, "Investor Fit": 0.10, "Risk Adjustment": 0.05 },
     acquisition: { "Strategic Synergy": 0.25, "Product Fit": 0.20, "Customer Overlap": 0.15, "Technology Fit": 0.15, "Financial Health": 0.10, "Team Quality": 0.10, "Integration Risk": 0.05 },

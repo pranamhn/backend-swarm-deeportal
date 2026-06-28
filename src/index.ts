@@ -13,6 +13,7 @@ import enterpriseRouter from "./routes/enterprise.js";
 import replayRouter from "./routes/replay.js";
 import playgroundRouter from "./routes/playground.js";
 import marketplaceRouter from "./routes/marketplace.js";
+import populationRouter from "./routes/population.js";
 
 const app = express();
 
@@ -37,6 +38,7 @@ app.use("/api/swarm/enterprise", enterpriseRouter);
 app.use("/api/swarm/replay", replayRouter);
 app.use("/api/swarm/playground", playgroundRouter);
 app.use("/api/swarm/marketplace", marketplaceRouter);
+app.use("/api/swarm/population", populationRouter);
 
 // ── Error Handler ──
 app.use(errorHandler);
