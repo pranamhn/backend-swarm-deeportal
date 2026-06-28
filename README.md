@@ -5474,7 +5474,7 @@ Status: `[ ]` = not started, `[~]` = in progress, `[x]` = done
     - Convenience accessor: features.socialSentiment, features.oasisSocialSim, etc. ✅
     - Estimated: ~100 lines → Actual: 120 lines ✅
 
-[ ] 54.14 Debugging & Troubleshooting Guide — in README section
+[x] 54.14 Debugging & Troubleshooting Guide ✅ DONE (see below)
 
 [x] 54.15 Loading, Empty, Error States  ← ALREADY DONE (section 37)
 [x] 54.16 Edge Cases Index                ← ALREADY DONE (section 51)
@@ -5519,7 +5519,7 @@ Status: `[ ]` = not started, `[~]` = in progress, `[x]` = done
     - Empty dashboard first-time user flow
     - Estimated: ~15 test files, ~500 lines
 
-[ ] 54.23 OpenAPI / Swagger Spec
+[x] 54.23 OpenAPI / Swagger Spec — openapi.json ✅ DONE
     - Generate from Zod schemas
     - GET /api/docs → Scalar or Swagger UI
     - Document both mode A and mode B endpoints
@@ -5534,7 +5534,7 @@ Status: `[ ]` = not started, `[~]` = in progress, `[x]` = done
     - Social graph visualization: dark mode color scheme
     - Estimated: ~3h audit + fix
 
-[ ] 54.25 Code Review Checklist
+[x] 54.25 Code Review Checklist — .github/pull_request_template.md ✅ DONE
     - New prediction type checklist (sec 52 already covers file list)
     - New social platform checklist (add new platform beyond Twitter/Reddit)
     - PR template: .github/pull_request_template.md
@@ -5663,7 +5663,7 @@ Status: `[ ]` = not started, `[~]` = in progress, `[x]` = done
 ### Next Steps (P4 Remaining)
 
 ```text
-[ ] 54.22 End-to-End Tests (Playwright) — dual-mode flows
+[x] 54.22 End-to-End Tests — tests/e2e.spec.ts ✅ DONE
 [x] 54.23 OpenAPI / Swagger Spec — openapi.json ✅ DONE
     - Full Swagger 3.1 spec ✅
     - 19 endpoints documented ✅
