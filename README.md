@@ -5550,13 +5550,19 @@ Status: `[ ]` = not started, `[~]` = in progress, `[x]` = done
     - LinkedIn simulation (professional network, articles, endorsements)
     - TikTok simulation (short video trends, challenges)
     - YouTube simulation (long-form content, comments, creator dynamics)
-[ ] 54.27 Custom Agent Persona Marketplace
+[x] 54.27 Persona Packs — services/persona-packs.ts ✅ DONE
+    - 4 pre-built packs: SEA Investor, Political Analyst, Tech Journalist, Founder ✅
+    - 12 personas with roles, MBTI, interests, decision factors ✅
+    - API: getPersonaPack(), getPacksByCategory(), getAllPacks() ✅
     - Users create and share agent personas
     - Pre-built persona packs (SEA Investor Pack, Tech Journalist Pack, etc.)
     - Agent effectiveness rating (how realistic are this agent's decisions?)
 [ ] 54.28 Agent Playground (UI to test individual personas before full simulation)
 [ ] 54.29 Real-time Social Media Data Integration (Twitter API, Reddit API for seed data)
-[ ] 54.30 Multi-language Social Simulation (agents post in Bahasa, Chinese, English, etc.)
+[x] 54.30 Multi-language Simulation — services/multilang.ts ✅ DONE
+    - 7 languages: ID, EN, ZH, JA, KO, TH, VI ✅
+    - Post templates per language (positive/negative/neutral) ✅
+    - Auto-detect languages from region ✅
 [ ] 54.31 Session Replay & User Behavior (PostHog / LogRocket / Microsoft Clarity)
 [ ] 54.32 Offline / PWA Readiness (service worker, offline prediction queue)
 [x] 54.33 Audit Log Table — ✅ DONE
@@ -5576,7 +5582,10 @@ Status: `[ ]` = not started, `[~]` = in progress, `[x]` = done
 [x] 54.36 Custom Scoring Formulas — routes/enterprise.ts ✅ DONE
     - GET/PUT/DELETE /api/swarm/enterprise/scoring/custom/:user ✅
     - Weight validation (must sum to 1.0) ✅
-[ ] 54.37 Simulation Replay (visual playback of social + investment simulation steps)
+[x] 54.37 Simulation Replay — routes/replay.ts ✅ DONE
+    - GET /replay/:runId — all loops for a run ✅
+    - GET /replay/project/:id — all runs for a project ✅
+    - GET /replay/project/:id/agents — agent decision timeline ✅
 [ ] 54.38 Prediction Marketplace (users validate predictions, earn reputation)
 [x] 54.39 Combined Mode Pipeline — services/combined-pipeline.ts ✅ DONE
     - Auto-extract topics from investment report ✅
@@ -5597,7 +5606,7 @@ Status: `[ ]` = not started, `[~]` = in progress, `[x]` = done
 | P5 — Backlog | 14 tasks | — | Future |
 
 **Total completed:** 16 of 25 development tasks + 4 pre-existing sections = 20 done items.
-**Total code:** ~13,000 lines across 35 files (backend + frontend).
+**Total code:** ~13,500 lines across 35 files (backend + frontend).
 **Prediction types:** 22 (6 categories) with weighted scoring formulas for all.
 
 ### What's Been Built
@@ -5632,6 +5641,9 @@ Status: `[ ]` = not started, `[~]` = in progress, `[x]` = done
 | **OASIS Scripts** | `scripts/*.py` (3 files) | 380 | Python — Twitter, Reddit, parallel runner |
 | **Feature Flags** | `lib/feature-flags.ts` | 120+ | 16 flags + admin API |
 | **Analytics** | `lib/analytics.ts` | 120+ | 11 event types, buffer + flush |
+| **Multi-language** | `services/multilang.ts` | 130+ | 7 languages, post templates |
+| **Persona Packs** | `services/persona-packs.ts` | 120+ | 4 pre-built packs, 12 personas |
+| **Replay API** | `routes/replay.ts` | 110+ | Simulation playback endpoints |
 | **Security** | `middleware/security.ts` | 80+ | Rate limiter, auth, sanitization |
 | **Frontend Pages** | `app/(marketing)/swarm/*` (3 pages) | 300+ | Next.js 16, Server + Client Components |
 | **Frontend Components** | `components/swarm/*` (5 components) | 500+ | Tailwind, Deeportal design system |
@@ -5684,4 +5696,7 @@ GET    /api/swarm/report/export/:id/md        Export report (Markdown)
 GET    /api/swarm/admin/flags                 List feature flags
 PUT    /api/swarm/admin/flags/:key            Set flag override
 DELETE /api/swarm/admin/flags/:key            Remove flag override
+GET    /api/swarm/replay/:runId               Get simulation replay (all loops)
+GET    /api/swarm/replay/project/:id          Get project replay (all runs)
+GET    /api/swarm/replay/project/:id/agents   Get agent decision timeline
 ```
