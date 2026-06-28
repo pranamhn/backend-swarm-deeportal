@@ -150,8 +150,8 @@ tests/                          # Playwright E2E tests (15 cases)
 
 | File | Content |
 |------|---------|
-| [specification.md](./specification.md) | Full product spec (55 sections) |
+| [specification.md](./md-file/specification.md) | Full product spec (55 sections) |
 | [repo-task-details.md](./repo-task-details.md) | 3-repo architecture + task split |
-| [population-data.md](./population-data.md) | Population intelligence spec |
-| [shared-types.md](./shared-types.md) | Type sharing across repos |
+| [population-data.md](./md-file/population-data.md) | Population intelligence spec |
+| [shared-types.md](./md-file/shared-types.md) | Type sharing across repos |
 | [openapi.json](./openapi.json) | API documentation (37 endpoints) |
