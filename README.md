@@ -1,5 +1,7 @@
 # Swarm Deeportal — AI Multi-Agent Prediction Engine
 
+> 📋 **Product Plan:** See [predict-deeportal-plan.md](./predict-deeportal-plan.md) for the full product vision, 6 mode categories, 22+ prediction types, and MVP recommendations.
+
 ## 📋 Document Structure
 
 ```text
@@ -5595,13 +5597,25 @@ Status: `[ ]` = not started, `[~]` = in progress, `[x]` = done
 | P5 — Backlog | 14 tasks | — | Future |
 
 **Total completed:** 16 of 25 development tasks + 4 pre-existing sections = 20 done items.
-**Total code:** ~10,200 lines across 35 files (backend + frontend).
+**Total code:** ~13,000 lines across 35 files (backend + frontend).
+**Prediction types:** 22 (6 categories) with weighted scoring formulas for all.
 
 ### What's Been Built
 
+**Prediction Modes:** 22 types across 6 categories (from predict-deeportal-plan.md)
+
+| Category | Modes |
+|----------|-------|
+| 🏢 Startup Intelligence | `funding_signal`, `growth_signal`, `investor_fit`, `mna_signal`, `business_risk` |
+| 📊 Market Intelligence | `market_opportunity`, `market_expansion`, `revenue_potential` |
+| 🐦 Social Sentiment | `social_sentiment` (+ sub: general, political_election, ipo, crisis) |
+| 🏛️ Political Intelligence | `political_risk`, `regulation_impact`, `policy_direction` |
+| 💳 Financial Intelligence | `credit_risk`, `financing_eligibility`, `cashflow_health` |
+| 📜 Legacy Compat | `funding`, `acquisition`, `ipo`, `market_dynamics`, `pricing`, `customer_behavior`, `competitive_response` |
+
 | Layer | Files | Lines | Tech |
 |-------|-------|-------|------|
-| **Backend Types** | `types/swarm.ts` | 300+ | TypeScript strict |
+| **Backend Types** | `types/swarm.ts` | 480+ | 22 prediction types, 6 categories, mode labels |
 | **Validation** | `lib/validation.ts` | 200+ | Zod with conditional mode validation |
 | **Error Handling** | `lib/errors.ts` | 100+ | AppError, 20+ codes, HTTP mapping |
 | **AI Client** | `lib/llm.ts` | 60+ | DeepSeek primary, OpenAI fallback |
@@ -5613,7 +5627,7 @@ Status: `[ ]` = not started, `[~]` = in progress, `[x]` = done
 | **Agent Generator** | `services/agent-generator.ts` | 160+ | Political + social + investment personas |
 | **Simulation Engine** | `services/simulation-engine.ts` | 140+ | Multi-scenario, feedback loop |
 | **Report Generator** | `services/report-generator.ts` | 120+ | ReACT-style with DeepSeek |
-| **Scoring Engine** | `services/scoring-engine.ts` | 150+ | Funding, acquisition, IPO, market, sentiment, political |
+| **Scoring Engine** | `services/scoring-engine.ts` | 250+ | 22 weighted formulas across 6 categories |
 | **IPC Manager** | `services/simulation-ipc.ts` | 100+ | TypeScript ↔ Python subprocess |
 | **OASIS Scripts** | `scripts/*.py` (3 files) | 380 | Python — Twitter, Reddit, parallel runner |
 | **Feature Flags** | `lib/feature-flags.ts` | 120+ | 16 flags + admin API |
