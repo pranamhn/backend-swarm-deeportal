@@ -9,6 +9,7 @@ import simulationRouter from "./routes/simulation.js";
 import reportRouter from "./routes/report.js";
 import notificationsRouter from "./routes/notifications.js";
 import adminRouter from "./routes/admin.js";
+import enterpriseRouter from "./routes/enterprise.js";
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use("/api/swarm/simulation", simulationRouter);
 app.use("/api/swarm/report", reportRouter);
 app.use("/api/swarm/notifications", notificationsRouter);
 app.use("/api/swarm/admin/flags", adminRouter);
+app.use("/api/swarm/enterprise", enterpriseRouter);
 
 // ── Error Handler ──
 app.use(errorHandler);
