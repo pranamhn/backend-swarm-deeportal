@@ -1634,14 +1634,16 @@ Status: `[ ]` = not started, `[~]` = in progress, `[x]` = done
     - political_data_sources (catalog with freshness + quality)
     - Estimated: ~150 lines
 
-[x] 18.2 KPU Ingestion — ✅ DEFERRED (schema ready, needs KPU CSV download) — scripts/ingest_kpu.py
+[x] 18.2 KPU Ingestion ✅ DONE
+    - scripts/ingest_kpu.py — parse KPU CSV, aggregate TPS → kelurahan ✅ — scripts/ingest_kpu.py
     - Parse KPU CSV per TPS
     - Aggregate TPS → kelurahan → kecamatan → kabupaten
     - Store in election_results table
     - Handle multiple election years (2024, 2019, 2014)
     - Estimated: ~200 lines
 
-[x] 18.3 BPS Ingestion — ✅ DEFERRED (schema ready, needs BPS API key) — scripts/ingest_bps.py
+[x] 18.3 BPS Ingestion ✅ DONE
+    - scripts/ingest_bps.py — fetch BPS WebAPI → DB ✅ — scripts/ingest_bps.py
     - Call BPS WebAPI for population + socioeconomic data
     - Map BPS variable IDs to schema columns
     - Store in demographic_profiles + socioeconomic_profiles
@@ -1681,7 +1683,8 @@ Status: `[ ]` = not started, `[~]` = in progress, `[x]` = done
     - Top swing regions cards
     - Estimated: ~150 lines
 
-[~] 18.7 Region Political Profile — ⏳ page directory created, content next sprint — app/(marketing)/political/[regionCode]/page.tsx
+[x] 18.7 Region Political Profile ✅ DONE
+    - app/(marketing)/political/[regionCode]/page.tsx ✅ — app/(marketing)/political/[regionCode]/page.tsx
     - Demographics summary
     - Electoral history chart (vote share per party per election)
     - Political scores visualization
@@ -1689,7 +1692,8 @@ Status: `[ ]` = not started, `[~]` = in progress, `[x]` = done
     - Data sources + freshness badge
     - Estimated: ~200 lines
 
-[~] 18.8 Dapil Analysis — ⏳ page directory created, content next sprint — app/(marketing)/political/dapil/page.tsx
+[x] 18.8 Dapil Analysis ✅ DONE
+    - app/(marketing)/political/dapil/page.tsx ✅ — app/(marketing)/political/dapil/page.tsx
     - Dapil selector
     - Multi-region comparison table
     - Swing index visualization
