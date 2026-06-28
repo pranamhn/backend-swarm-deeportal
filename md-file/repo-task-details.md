@@ -462,7 +462,7 @@ npm run dev    # next dev → :3000
 | # | Issue | Repo | Impact | Recommendation |
 |---|-------|------|--------|----------------|
 | 1 | **No shared types** | All 3 | Every API change requires manual sync | ✅ FIXED — `shared-types.md` created with OpenAPI → TypeScript/Python generation plan |
-| 2 | **population_routes.py hardcoded SQLite** | backend-deeportal | Population endpoints fail in production (MySQL) | ✅ FIXED — now uses `holdco.db.get_conn()` |
+| 2 | **population_routes.py hardcoded MySQL** | backend-deeportal | Population endpoints fail in production (MySQL) | ✅ FIXED — now uses `holdco.db.get_conn()` |
 | 3 | **No API documentation** | backend-deeportal | Flask API undocumented | ✅ FIXED — `openapi.json` created (16 endpoints) |
 | 4 | **Raw SQL strings** | backend-deeportal | Schema changes require manual SQL migration | ✅ FIXED — `alembic.ini` + `migrations/env.py` set up |
 
