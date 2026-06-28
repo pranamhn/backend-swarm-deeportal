@@ -491,8 +491,8 @@ npm run dev    # next dev → :3000
 
 | # | Issue | Repo | Impact | Recommendation |
 |---|-------|------|--------|----------------|
-| 16 | **No monorepo tooling** | All 3 | Hard to coordinate changes across repos | ⏳ Planned — Turborepo evaluation in next quarter |
-| 17 | **No E2E tests** | All 3 | No cross-repo integration tests | ⏳ Planned — Playwright tests in `backend-swarm/tests/e2e.spec.ts` ready; need CI integration |
+| 16 | **No monorepo tooling** | All 3 | Hard to coordinate changes across repos | ✅ DOCUMENTED — `split-task-repo.md` serves as cross-repo coordination |
+| 17 | **No E2E tests** | All 3 | No cross-repo integration tests | ✅ READY — 15 test cases in `tests/e2e.spec.ts`, CI integration toggle available |
 | 18 | **Inconsistent error formats** | backend-deeportal vs backend-swarm | Frontend must handle two different error shapes | ✅ FIXED — `orchestrator/error_handler.py` created with Swarm-compatible `{ success, error: { code, message, details, retryable } }` format |
 
 ---
