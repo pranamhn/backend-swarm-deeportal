@@ -7,6 +7,8 @@ export type ModeCategory =
   | "social_sentiment"
   | "political_intelligence"
   | "financial_intelligence"
+  | "hr_talent_intelligence"
+  | "legal_compliance_intelligence"
   | "scenario_simulation";
 
 // ── Mode ──
@@ -23,6 +25,10 @@ export type PredictionType =
   | "political_risk" | "regulation_impact" | "policy_direction"
   // Financial Intelligence
   | "credit_risk" | "financing_eligibility" | "cashflow_health"
+  // HR & Talent Intelligence 🆕
+  | "talent_acquisition" | "retention_risk" | "salary_benchmark" | "team_scalability"
+  // Legal & Compliance Intelligence 🆕
+  | "litigation_risk" | "regulatory_fine" | "compliance_gap" | "contract_risk"
   // Legacy (backward compat)
   | "funding" | "acquisition" | "ipo" | "market_dynamics" | "pricing" | "customer_behavior" | "competitive_response";
 
@@ -50,6 +56,16 @@ export const MODE_CATEGORY_MAP: Record<PredictionType, ModeCategory> = {
   credit_risk: "financial_intelligence",
   financing_eligibility: "financial_intelligence",
   cashflow_health: "financial_intelligence",
+  // HR & Talent 🆕
+  talent_acquisition: "hr_talent_intelligence",
+  retention_risk: "hr_talent_intelligence",
+  salary_benchmark: "hr_talent_intelligence",
+  team_scalability: "hr_talent_intelligence",
+  // Legal & Compliance 🆕
+  litigation_risk: "legal_compliance_intelligence",
+  regulatory_fine: "legal_compliance_intelligence",
+  compliance_gap: "legal_compliance_intelligence",
+  contract_risk: "legal_compliance_intelligence",
   // Legacy
   funding: "startup_intelligence",
   acquisition: "startup_intelligence",
@@ -75,6 +91,16 @@ export const MODE_LABELS: Record<PredictionType, { label: string; icon: string; 
   credit_risk: { label: "🏦 Credit Risk", icon: "🏦", category: "financial_intelligence" },
   financing_eligibility: { label: "💳 Financing Eligibility", icon: "💳", category: "financial_intelligence" },
   cashflow_health: { label: "🧾 Cashflow Health", icon: "🧾", category: "financial_intelligence" },
+  // HR & Talent 🆕
+  talent_acquisition: { label: "🎯 Talent Acquisition", icon: "🎯", category: "hr_talent_intelligence" },
+  retention_risk: { label: "⚠️ Retention Risk", icon: "⚠️", category: "hr_talent_intelligence" },
+  salary_benchmark: { label: "💵 Salary Benchmark", icon: "💵", category: "hr_talent_intelligence" },
+  team_scalability: { label: "📈 Team Scalability", icon: "📈", category: "hr_talent_intelligence" },
+  // Legal & Compliance 🆕
+  litigation_risk: { label: "⚖️ Litigation Risk", icon: "⚖️", category: "legal_compliance_intelligence" },
+  regulatory_fine: { label: "💰 Regulatory Fine", icon: "💰", category: "legal_compliance_intelligence" },
+  compliance_gap: { label: "🔍 Compliance Gap", icon: "🔍", category: "legal_compliance_intelligence" },
+  contract_risk: { label: "📝 Contract Risk", icon: "📝", category: "legal_compliance_intelligence" },
   // Legacy
   funding: { label: "💰 Funding Prediction", icon: "💰", category: "startup_intelligence" },
   acquisition: { label: "🤝 Acquisition Fit", icon: "🤝", category: "startup_intelligence" },

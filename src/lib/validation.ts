@@ -9,6 +9,10 @@ export const predictionTypeSchema = z.enum([
   "market_opportunity", "market_expansion", "revenue_potential",
   "political_risk", "regulation_impact", "policy_direction",
   "credit_risk", "financing_eligibility", "cashflow_health",
+  // HR & Talent 🆕
+  "talent_acquisition", "retention_risk", "salary_benchmark", "team_scalability",
+  // Legal & Compliance 🆕
+  "litigation_risk", "regulatory_fine", "compliance_gap", "contract_risk",
   // Legacy (backward compat)
   "funding", "acquisition", "ipo", "market_dynamics", "pricing", "customer_behavior", "competitive_response",
 ]);

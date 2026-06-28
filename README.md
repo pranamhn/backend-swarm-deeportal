@@ -5626,12 +5626,12 @@ Status: `[ ]` = not started, `[~]` = in progress, `[x]` = done
 | P5 — Backlog | 14 tasks | ✅ 14/14 | **100%** ✅ |
 
 **Total completed:** 39 of 39 tasks = **100%** 🎉 | ALL priorities complete.
-**Total code:** ~14,000 lines across 39 files (backend + frontend).
-**Prediction types:** 22 (6 categories) with weighted scoring formulas for all.
+**Total code:** ~14,300 lines, 30 prediction types, 8 categories.
+**Prediction types:** 30 (8 categories) with weighted scoring formulas for all.
 
 ### What's Been Built
 
-**Prediction Modes:** 22 types across 6 categories (from predict-deeportal-plan.md)
+**Prediction Modes:** 30 types across 8 categories (from predict-deeportal-plan.md)
 
 | Category | Modes |
 |----------|-------|
@@ -5640,11 +5640,13 @@ Status: `[ ]` = not started, `[~]` = in progress, `[x]` = done
 | 🐦 Social Sentiment | `social_sentiment` (+ sub: general, political_election, ipo, crisis) |
 | 🏛️ Political Intelligence | `political_risk`, `regulation_impact`, `policy_direction` |
 | 💳 Financial Intelligence | `credit_risk`, `financing_eligibility`, `cashflow_health` |
+| 👥 HR & Talent 🆕 | `talent_acquisition`, `retention_risk`, `salary_benchmark`, `team_scalability` |
+| ⚖️ Legal & Compliance 🆕 | `litigation_risk`, `regulatory_fine`, `compliance_gap`, `contract_risk` |
 | 📜 Legacy Compat | `funding`, `acquisition`, `ipo`, `market_dynamics`, `pricing`, `customer_behavior`, `competitive_response` |
 
 | Layer | Files | Lines | Tech |
 |-------|-------|-------|------|
-| **Backend Types** | `types/swarm.ts` | 480+ | 22 prediction types, 6 categories, mode labels |
+| **Backend Types** | `types/swarm.ts` | 500+ | 30 prediction types, 8 categories, mode labels |
 | **Validation** | `lib/validation.ts` | 200+ | Zod with conditional mode validation |
 | **Error Handling** | `lib/errors.ts` | 100+ | AppError, 20+ codes, HTTP mapping |
 | **AI Client** | `lib/llm.ts` | 60+ | DeepSeek primary, OpenAI fallback |
@@ -5656,7 +5658,7 @@ Status: `[ ]` = not started, `[~]` = in progress, `[x]` = done
 | **Agent Generator** | `services/agent-generator.ts` | 160+ | Political + social + investment personas |
 | **Simulation Engine** | `services/simulation-engine.ts` | 140+ | Multi-scenario, feedback loop |
 | **Report Generator** | `services/report-generator.ts` | 120+ | ReACT-style with DeepSeek |
-| **Scoring Engine** | `services/scoring-engine.ts` | 250+ | 22 weighted formulas across 6 categories |
+| **Scoring Engine** | `services/scoring-engine.ts` | 310+ | 30 weighted formulas across 8 categories |
 | **IPC Manager** | `services/simulation-ipc.ts` | 100+ | TypeScript ↔ Python subprocess |
 | **OASIS Scripts** | `scripts/*.py` (5 files) | 600+ | Python — Twitter, Reddit, Mastodon, Bluesky, parallel runner |
 | **Feature Flags** | `lib/feature-flags.ts` | 120+ | 16 flags + admin API |
