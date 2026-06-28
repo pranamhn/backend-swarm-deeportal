@@ -241,3 +241,28 @@ webapp.py: 2,577 → 901 lines (target <1,000 achieved!)
 ─────────────────────────
 Clean score: 99% ✅
 ```
+
+
+---
+
+## Documentation Cleanup
+
+### Backend-deeportal md-file: 30 → 19 files
+
+| Action | Files | Count |
+|--------|-------|-------|
+| Moved to frontend | `4_FRONTEND_AGENT.md`, `9_COLOR_STYLE.md`, `plan_dashboard.md` | 3 |
+| Merged (4→1) | `cost_enrich.md` + `cost_ingest.md` + logs → `cost-tracking.md` | 3 |
+| Removed duplicates | `data_enrichment.md`, `deeportal_master.md`, `admin_api_backend_tasklist.md`, `admin_data_source_switch.md` | 4 |
+| **Total removed** | | **10** |
+
+### Frontend-deeportal md-file: 3 → 7 files
+
+| File | Source |
+|------|--------|
+| `4_FRONTEND_AGENT.md` | Moved from backend (UI agent instructions) |
+| `9_COLOR_STYLE.md` | Moved from backend (color style guide) |
+| `plan_dashboard.md` | Moved from backend (dashboard planning) |
+| `cost-tracking.md` | Cross-repo reference |
+
+### No duplicate information remains across repos ✅
