@@ -1878,3 +1878,208 @@ Dengan menggabungkan data dari BPS, Sensus BPS, Dukcapil agregat, Satu Data Indo
 Core principle:
 
 > Use aggregated public data, build synthetic population agents, and simulate market/policy reaction without using personal data.
+
+---
+
+# 22. Development TODOs Checklist
+
+Status: `[ ]` = not started, `[~]` = in progress, `[x]` = done
+
+## 🖥️ Frontend (frontend-deeportal)
+
+```text
+[ ] 22.1 Population Dashboard Page — app/(marketing)/population/page.tsx
+    - Population coverage overview (total regions, data freshness)
+    - Region index with search + filter (province, kabupaten/kota)
+    - Quick stats cards (total population, density, HDI, poverty rate)
+    - Estimated: ~150 lines
+
+[ ] 22.2 Region Profile Page — app/(marketing)/population/[regionId]/page.tsx
+    - Demographics overview (population pyramid visualization)
+    - Socioeconomic indicators (poverty, unemployment, HDI, Gini)
+    - Education & employment breakdown
+    - Population growth trend chart
+    - Data source + freshness badge
+    - Estimated: ~200 lines
+
+[ ] 22.3 Segment Builder Page — app/(marketing)/population/segment/page.tsx
+    - Multi-select filters: region, age_group, income_proxy, occupation, urban/rural
+    - Real-time estimated population size calculation
+    - Segment visualization (pie/bar chart)
+    - Save segment + export to CSV
+    - Estimated: ~200 lines
+
+[ ] 22.4 Population Map View — components/population/PopulationMap.tsx
+    - Indonesia choropleth map (province/kabupaten level)
+    - Color-coded by: population density, HDI, poverty rate, market opportunity
+    - Click region → navigate to region profile
+    - Toggle between metrics
+    - Estimated: ~250 lines
+
+[ ] 22.5 Region Comparison — components/population/RegionComparison.tsx
+    - Select 2-5 regions side-by-side
+    - Comparison table: population, density, HDI, poverty, unemployment, expenditure
+    - Radar chart overlay
+    - Export comparison as CSV/PNG
+    - Estimated: ~180 lines
+
+[ ] 22.6 Population API Service — lib/api/populationService.ts
+    - getRegionProfile(regionId) → region demographics
+    - searchRegions(query, filters) → paginated results
+    - buildSegment(attributes) → estimated size + breakdown
+    - getRegionRanking(metric, limit) → ranked list
+    - getPopulationStats() → national overview
+    - Estimated: ~100 lines
+
+[ ] 22.7 Frontend Types — types/population.ts
+    - Region, PopulationData, AgeGroup, SocioeconomicData
+    - EmploymentData, EducationData, PopulationAgent
+    - SegmentDefinition, SegmentResult, RegionRanking
+    - Estimated: ~80 lines
+```
+
+## ⚙️ Backend API (backend-deeportal)
+
+```text
+[ ] 22.8 Population Database Tables — migrations/
+    - regions (id, kode_bps, name, type, parent_id, area_km2, geojson)
+    - population_data (region_id, year, total, male, female, density, growth_rate)
+    - age_groups (region_id, year, group_0_4, ..., group_75plus)
+    - socioeconomic (region_id, year, poverty_rate, unemployment, hdi, gini, min_wage, expenditure_pc)
+    - education (region_id, year, no_school, elementary, junior_high, senior_high, diploma, bachelor, postgraduate)
+    - employment (region_id, year, labor_force, employed, sector_agriculture, sector_industry, sector_services, informal_pct)
+    - population_agents (id, region_id, agent_type, age_group, income_proxy, occupation, attributes_json)
+    - source_catalog (id, name, url, last_fetch, data_freshness, quality_score)
+    - Estimated: ~200 lines (Drizzle ORM schema + migration)
+
+[ ] 22.9 Population API Routes — app/api/population/
+    - GET /region/:id — region full profile
+    - GET /regions — list/search with filters (province, type, page)
+    - GET /regions/ranking — ranked by metric (population, density, hdi, poverty)
+    - POST /segment/build — build population segment + estimate size
+    - GET /stats — national overview aggregates
+    - GET /sources — data source catalog with freshness
+    - Estimated: ~300 lines
+
+[ ] 22.10 BPS Ingestion Worker — workers/bps-ingestion.ts
+    - BullMQ worker: scheduled (weekly) fetch from BPS WebAPI
+    - Parse BPS JSON/XML response → normalize to DB schema
+    - Update source_catalog last_fetch + quality_score
+    - Handle rate limiting + retry
+    - Log ingestion events
+    - Estimated: ~200 lines
+
+[ ] 22.11 Data Quality Scoring — lib/population/quality.ts
+    - Calculate freshness score (days since last update → 0-1)
+    - Calculate completeness score (non-null fields / total fields)
+    - Calculate source trust score (BPS=1.0, World Bank=0.9, Open Data=0.7)
+    - Composite quality_score = (freshness * 0.4 + completeness * 0.3 + trust * 0.3)
+    - Flag data below quality threshold
+    - Estimated: ~100 lines
+
+[ ] 22.12 Region Ranking Algorithm — lib/population/ranking.ts
+    - Multi-factor region scoring for market opportunity
+    - Factors: population_size, density, hdi, expenditure_pc, growth_rate, urbanization
+    - Weighted composite score per region
+    - Top-N ranking with percentile
+    - Estimated: ~120 lines
+```
+
+## 🔄 Swarm Engine (backend-swarm-deeportal)
+
+```text
+[ ] 22.13 Population Agent Generator — services/population-agents.ts
+    - Generate synthetic population agents from demographic DB
+    - Agent types: urban_worker, rural_farmer, student, professional, informal_worker, entrepreneur
+    - Attributes: age_group, income_proxy, occupation, mobility_need, digital_adoption, price_sensitivity, policy_sensitivity
+    - Batch generation: create N agents per region proportional to population
+    - Integration with existing agent-generator.ts
+    - Estimated: ~200 lines
+
+[ ] 22.14 Population Swarm Simulation — services/population-simulation.ts
+    - Run population agent simulation for a given scenario
+    - Scenario types: policy_change, market_entry, price_change, regulatory_shift
+    - Each agent reacts based on attributes + scenario parameters
+    - Aggregate results: adoption_rate, demand_shift, sentiment_change, migration_pattern
+    - SSE progress updates per loop
+    - Estimated: ~250 lines
+
+[ ] 22.15 Population-Swarm Integration — services/population-integration.ts
+    - Connect population data to existing prediction types
+    - market_opportunity: inject regional population coverage
+    - funding_signal: validate market size with population data
+    - political_risk: add regional stability indicators
+    - regulation_impact: estimate population affected
+    - credit_risk: enrich with regional economic indicators
+    - talent_acquisition: check workforce availability by region
+    - retention_risk: analyze labor market conditions
+    - revenue_potential: size consumer segments
+    - Estimated: ~200 lines
+
+[ ] 22.16 Population Prediction Types — types/swarm.ts (extend)
+    - Add population_intelligence category
+    - Add 4 new prediction types:
+      - regional_opportunity (region ranking for market entry)
+      - demand_forecast (population-based demand estimation)
+      - consumer_segment (demographic segment sizing)
+      - urbanization_impact (urban growth + infrastructure pressure)
+    - Add MODE_CATEGORY_MAP + MODE_LABELS entries
+    - Add Zod validation for new types
+    - Estimated: ~80 lines
+
+[ ] 22.17 Population Scoring Formulas — services/scoring-engine.ts (extend)
+    - regional_opportunity: population_size(0.25), density(0.15), hdi(0.15), expenditure_pc(0.20), growth_rate(0.15), urbanization(0.10)
+    - demand_forecast: target_segment_size(0.30), income_proxy(0.25), digital_adoption(0.20), mobility(0.15), competition(0.10)
+    - consumer_segment: addressable_population(0.30), purchasing_power(0.25), accessibility(0.20), behavior_fit(0.15), growth_potential(0.10)
+    - urbanization_impact: current_density(0.25), growth_rate(0.25), infrastructure_gap(0.20), migration_pressure(0.15), environmental_risk(0.15)
+    - Estimated: ~80 lines
+
+[ ] 22.18 Population Data API Routes — routes/population.ts
+    - GET /population/region/:id — region demographics + scoring
+    - GET /population/ranking — market opportunity ranking
+    - POST /population/simulate — run population swarm sim
+    - GET /population/segment/:id — get segment details
+    - Estimated: ~150 lines
+```
+
+---
+
+## Priority Summary
+
+| Priority | Repo | Items | Est. Lines |
+|----------|------|-------|-----------|
+| P1 — Frontend UI | frontend-deeportal | 7 tasks | ~1,160 |
+| P2 — Backend Data | backend-deeportal | 5 tasks | ~920 |
+| P3 — Swarm Engine | backend-swarm-deeportal | 6 tasks | ~960 |
+| **Total** | **3 repos** | **18 tasks** | **~3,040** |
+
+### Recommended Sprint Plan
+
+```text
+SPRINT 1 (Week 1-2): Data Foundation
+  [ ] 22.8 Database tables (backend-deeportal)
+  [ ] 22.11 Data quality scoring (backend-deeportal)
+  [ ] 22.9 Population API routes (backend-deeportal)
+  → Goal: Population data available via API
+
+SPRINT 2 (Week 3-4): Population Intelligence
+  [ ] 22.10 BPS ingestion worker (backend-deeportal)
+  [ ] 22.12 Region ranking algorithm (backend-deeportal)
+  [ ] 22.16 Prediction types + 22.17 Scoring formulas (backend-swarm)
+  → Goal: Population-powered predictions functional
+
+SPRINT 3 (Week 5-6): Swarm Integration
+  [ ] 22.13 Population agent generator (backend-swarm)
+  [ ] 22.14 Population swarm simulation (backend-swarm)
+  [ ] 22.15 Population-swarm integration (backend-swarm)
+  [ ] 22.18 Population API routes (backend-swarm)
+  → Goal: Population agents feed into all predictions
+
+SPRINT 4 (Week 7-8): Frontend UI
+  [ ] 22.7 Types + 22.6 API service (frontend)
+  [ ] 22.1 Dashboard + 22.4 Map (frontend)
+  [ ] 22.2 Region profile (frontend)
+  [ ] 22.3 Segment builder (frontend)
+  [ ] 22.5 Region comparison (frontend)
+  → Goal: Full population intelligence UI
+```
