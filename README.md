@@ -3484,7 +3484,7 @@ New Swarm-Specific Components (under components/swarm/):
 
 ```text
 - Next.js API Routes (under app/api/swarm/)
-- PostgreSQL 16+ (existing Deeportal DB, add predict_* tables)
+- MySQL 8+ (existing Deeportal DB, add predict_* tables)
 - MySQL JSON extension for knowledge graph embeddings
 - Redis 7+ (existing, add BullMQ queue for simulation jobs)
 - BullMQ for async simulation processing
@@ -3513,7 +3513,7 @@ DeepSeek Advantages:
 # .env.local (Deeportal existing + new predict vars)
 
 # Existing Deeportal
-DATABASE_URL=postgresql://...
+DATABASE_URL=mysql://...
 REDIS_URL=redis://...
 HOLDCO_BACKEND_ORIGIN=http://127.0.0.1:8080
 
@@ -3633,7 +3633,7 @@ Create pages and components for:
 7. Score cards
 8. Follow-up chat
 
-Use TypeScript, Tailwind CSS, shadcn/ui, and PostgreSQL.
+Use TypeScript, Tailwind CSS, shadcn/ui, and MySQL.
 
 The core flow:
 - User creates prediction project
@@ -3949,7 +3949,7 @@ Zep is MiroFish's backbone for knowledge graph and agent memory. It offers:
 | Graph storage | Zep Cloud ($0.01+/msg, external latency) | **MySQL** (internal, zero latency, free) | 🏆 Built-in |
 | Graph search | Zep search API | **MySQL JSON similarity + SQL queries** | 🏆 Built-in |
 | Agent memory | Zep episodic memory (user/session scoped) | **JSONB `memory` field on prediction_agents** | 🏆 Built-in |
-| Vendor lock-in | Yes — all data in Zep Cloud | No — all data in own PostgreSQL | 🏆 Built-in |
+| Vendor lock-in | Yes — all data in Zep Cloud | No — all data in own MySQL | 🏆 Built-in |
 | Cost at scale | ~$500+/mo for 10K predictions | **$0** (existing infra) | 🏆 Built-in |
 
 ### What We Should Steal From Zep (Without the Dependency)
@@ -3983,7 +3983,7 @@ This gives us Zep-style cross-session memory **without Zep's cost or latency**.
 Zep adds: external dependency, cost, latency, vendor lock-in
 Zep removes: nothing we can't build in 1 day with MySQL JSON
 
-Decision: Build episodic memory in PostgreSQL, skip Zep entirely.
+Decision: Build episodic memory in MySQL, skip Zep entirely.
 Savings: ~$6,000/year at 10K predictions/month scale.
 ```
 
@@ -4365,7 +4365,7 @@ Dengan fitur ini, Deeportal.ai tidak hanya menjadi database startup seperti Crun
 
 ```text
 - Node.js 20+
-- PostgreSQL 16+
+- MySQL 8+
 - Redis 7+
 - pnpm (preferred) or npm
 - DeepSeek API key (primary) — https://platform.deepseek.com
@@ -4376,7 +4376,7 @@ Dengan fitur ini, Deeportal.ai tidak hanya menjadi database startup seperti Crun
 
 ```env
 # .env.local
-DATABASE_URL=postgresql://user:pass@localhost:5432/deeportal
+DATABASE_URL=mysql://root:password@localhost:3306/deeportal
 REDIS_URL=redis://localhost:6379
 
 # Primary AI — DeepSeek
@@ -4698,7 +4698,7 @@ if (activeJobs >= maxConcurrent) {
 - Cache knowledge graph nodes for same company across predictions
 - Reuse agent personas when similar prediction type + context
 - Batch DB writes during simulation (collect snapshots, write once)
-- Connection pooling for PostgreSQL (pgbouncer or built-in pool)
+- Connection pooling for MySQL (connection pool)
 - Redis caching for recent reports (TTL: 24h)
 - Compress report JSON before storing (gzip in JSONB)
 - Pagination for prediction history (cursor-based, limit 20)
@@ -5182,7 +5182,7 @@ logger.error({
 ```text
 Frontend:   Vercel (Next.js optimized)
 Worker:     Railway / Fly.io (BullMQ worker)
-Database:   Supabase (managed PostgreSQL)
+Database:   Supabase (managed MySQL)
 Redis:      Upstash (serverless Redis)
 Storage:    Cloudflare R2 or Supabase Storage
 AI:         OpenAI / Anthropic API (with request-level timeout + retry)
@@ -5495,7 +5495,7 @@ Status: `[ ]` = not started, `[~]` = in progress, `[x]` = done
     - Estimated: ~120 lines → Actual: 120 lines ✅
 
 [x] 54.20 Database Migration Strategy — drizzle.config.ts ✅ DONE
-    - Drizzle ORM config with PostgreSQL ✅
+    - Drizzle ORM config with MySQL ✅
     - Migration commands: db:generate, db:migrate, db:push, db:studio ✅
     - Estimated: ~60 lines → Actual: configured ✅
 
@@ -5626,7 +5626,7 @@ Status: `[ ]` = not started, `[~]` = in progress, `[x]` = done
 | P5 — Backlog | 14 tasks | ✅ 14/14 | **100%** ✅ |
 
 **Total completed:** 39 of 39 tasks = **100%** 🎉 | ALL priorities complete.
-**Total code:** ~14,300 lines, 30 prediction types, 8 categories.
+**Total code:** ~14,300 lines, 34 prediction types, 8 categories.
 **Prediction types:** 34 (9 categories) with weighted scoring formulas for all.
 
 ### What's Been Built
@@ -5651,7 +5651,7 @@ Status: `[ ]` = not started, `[~]` = in progress, `[x]` = done
 | **Validation** | `lib/validation.ts` | 200+ | Zod with conditional mode validation |
 | **Error Handling** | `lib/errors.ts` | 100+ | AppError, 20+ codes, HTTP mapping |
 | **AI Client** | `lib/llm.ts` | 60+ | DeepSeek primary, OpenAI fallback |
-| **Database** | `db/schema.ts`, `drizzle.config.ts` | 200+ | Drizzle ORM, 13 tables, PostgreSQL |
+| **Database** | `db/schema.ts`, `drizzle.config.ts` | 200+ | Drizzle ORM, 14 tables, MySQL |
 | **API Routes** | `routes/*.ts` (5 files) | 500+ | Express, 14 endpoints |
 | **Simulation Queue** | `services/simulation-queue.ts` | 120+ | BullMQ, 7-step pipeline |
 | **Ontology Generator** | `services/ontology-generator.ts` | 100+ | LLM + domain-specific defaults |
@@ -5693,7 +5693,7 @@ Status: `[ ]` = not started, `[~]` = in progress, `[x]` = done
 ✅ TypeScript: zero errors, strict mode
 ✅ 32 API endpoints documented (openapi.json)
 ✅ 4 social platforms (Twitter, Reddit, Mastodon, Bluesky) — all FREE
-✅ 22 prediction types with weighted scoring
+✅ 34 prediction types with weighted scoring
 ✅ SSE real-time streaming
 ✅ Rate limiting + input sanitization
 ✅ PR template + code review checklist
