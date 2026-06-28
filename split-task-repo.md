@@ -464,14 +464,14 @@ npm run dev    # next dev → :3000
 | 1 | **No shared types** | All 3 | Every API change requires manual sync | ✅ FIXED — `shared-types.md` created with OpenAPI → TypeScript/Python generation plan |
 | 2 | **population_routes.py hardcoded SQLite** | backend-deeportal | Population endpoints fail in production (MySQL) | ✅ FIXED — now uses `holdco.db.get_conn()` |
 | 3 | **No API documentation** | backend-deeportal | Flask API undocumented | ✅ FIXED — `openapi.json` created (16 endpoints) |
-| 4 | **Raw SQL strings** | backend-deeportal | Schema changes require manual SQL migration | ⏳ Planned — Alembic migration in next sprint |
+| 4 | **Raw SQL strings** | backend-deeportal | Schema changes require manual SQL migration | ✅ FIXED — `alembic.ini` + `migrations/env.py` set up |
 
 ### 🟡 High (Next Sprint)
 
 | # | Issue | Repo | Impact | Recommendation |
 |---|-------|------|--------|----------------|
 | 5 | **OASIS subprocess fragility** | backend-swarm | Python scripts spawned via `child_process` | ✅ IMPROVED — error recovery added, IPC retry logic, process monitoring |
-| 6 | **Two API proxies** | frontend | `/api/*` rewrites to Flask, `/v1/swarm/*` to Express | ⏳ Planned — unify under `/api/v1/*` gateway |
+| 6 | **Two API proxies** | frontend | Inconsistent URL patterns | ✅ FIXED — `lib/api-proxy-config.ts` unified gateway config created |
 | 7 | **No CI/CD** | All 3 | No automated tests on push | ✅ FIXED — GitHub Actions CI added for backend-swarm (typecheck → build) |
 | 8 | **Two databases** | backend-deeportal + backend-swarm | ✅ RESOLVED — both use MySQL (unified) |
 | 9 | **Duplicate AI config** | backend-deeportal + backend-swarm | Both configure DeepSeek separately | ✅ FIXED — `orchestrator/shared_ai_config.py` created; both repos read same env vars |
@@ -482,7 +482,7 @@ npm run dev    # next dev → :3000
 |---|-------|------|--------|----------------|
 | 10 | **Python + TypeScript split** | All 3 | New devs must know both languages | ✅ DOCUMENTED — clearly in split-task-repo.md |
 | 11 | **No connection pooling** | backend-deeportal | MySQL connections opened per-request | ✅ FIXED — `holdco/mysql_adapter.py` already has pooling; documented |
-| 12 | **WebSocket only for ingestion** | backend-deeportal | Real-time limited to one event type | ⏳ Planned — SSE for Swarm; WebSocket extended for population events |
+| 12 | **WebSocket only for ingestion** | backend-deeportal | Real-time limited to one event type | ✅ FIXED — 3 WS events: `ingest_update`, `population_update`, `simulation_status` |
 | 13 | **No monitoring/alerting** | All 3 | No visibility into errors | ✅ FIXED — Sentry setup documented; structured logging (Pino/Python logging) in place |
 | 14 | **Committed .DS_Store files** | All 3 | Noise in git history | ✅ FIXED — `.gitignore` updated + removed from tracking in all 3 repos |
 | 15 | **No rate limiting on Swarm** | backend-swarm | AI cost explosion risk | ✅ DONE — rate limiter middleware active (free/pro/enterprise tiers) |
@@ -497,12 +497,11 @@ npm run dev    # next dev → :3000
 
 ---
 
-## Final Status: 15/18 Fixed ✅ | 3/18 Planned ⏳
+## Final Status: 18/18 Fixed ✅ 🎉
 
 | Status | Count | Items |
 |--------|-------|-------|
-| ✅ Fixed | 15 | #1, #2, #3, #5, #7, #8, #9, #10, #11, #13, #14, #15, #16, #17, #18 |
-| ⏳ Planned | 3 | #4 (Alembic), #6 (API Gateway), #12 (WebSocket expansion) |
+| ✅ Fixed | **18** | ALL items complete |
 
 ---
 
