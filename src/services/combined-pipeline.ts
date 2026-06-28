@@ -2,7 +2,7 @@ import { db, swarmProjects, swarmReports } from "../db/index.js";
 import { eq } from "drizzle-orm";
 import { logger } from "../lib/logger.js";
 import { enqueueSimulation } from "./simulation-queue.js";
-import { createNotification } from "../routes/notifications.js";
+import { createNotification } from "./notification-service.js";
 import crypto from "crypto";
 
 // ── Combined Mode Pipeline ──

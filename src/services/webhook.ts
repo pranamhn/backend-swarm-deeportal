@@ -1,4 +1,5 @@
 import { logger } from "../lib/logger.js";
+import { createNotification } from "./notification-service.js";
 
 // ── Webhook Notification Service ──
 
@@ -69,17 +70,11 @@ export async function fireWebhook(
 
 // ── Notification helpers ──
 export async function notifySimulationCompleted(projectId: string, userId: string, mode: string, score: number): Promise<void> {
-  // In-app notification
-  const { createNotification } = await import("../routes/notifications.js");
   await createNotification(userId, "simulation_completed", { projectId, mode, score });
-
-  // Webhook
   await fireWebhook(userId, "simulation.completed", { projectId, mode, status: "completed", data: { score } });
 }
 
 export async function notifySimulationFailed(projectId: string, userId: string, mode: string, error: string): Promise<void> {
-  const { createNotification } = await import("../routes/notifications.js");
   await createNotification(userId, "simulation_failed", { projectId, mode, error });
-
   await fireWebhook(userId, "simulation.failed", { projectId, mode, status: "failed", data: { error } });
 }

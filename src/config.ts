@@ -5,7 +5,7 @@ export const config = {
   nodeEnv: process.env.NODE_ENV || "development",
 
   database: {
-    url: process.env.DATABASE_URL || "mysql://root:password@localhost:3306/deeportal",
+    url: process.env.DATABASE_URL || "",
   },
 
   redis: {

@@ -143,11 +143,11 @@ import { createNotification } from "../services/notification-service.js";
 
 | # | Task | Effort | Repo |
 |---|------|--------|------|
-| 1 | Remove hardcoded MySQL password | 5 min | backend-swarm |
-| 2 | Extract notification service | 30 min | backend-swarm |
-| 3 | Move WEBAPP_URL to config | 10 min | backend-deeportal |
-| 4 | Make API key quotas configurable | 15 min | backend-deeportal |
-| 5 | Fix MySQL adapter defaults | 10 min | backend-deeportal |
-| 6 | Consolidate formatDate | 15 min | frontend |
-| 7 | Clean backendOrigin fallback | 5 min | frontend |
+| 1 | Remove hardcoded MySQL password | ✅ DONE | backend-swarm |
+| 2 | Extract notification service | ✅ DONE | backend-swarm |
+| 3 | Move WEBAPP_URL to config | ✅ DONE | backend-deeportal |
+| 4 | Make API key quotas configurable | ✅ DONE | backend-deeportal |
+| 5 | Fix MySQL adapter defaults | ✅ DONE | backend-deeportal |
+| 6 | Consolidate formatDate | ✅ DONE | frontend |
+| 7 | Clean backendOrigin fallback | ✅ DONE | frontend |
 | **Total** | | **~1.5 hours** | **All 3** |
