@@ -1885,17 +1885,17 @@ Social Listening:
 | Frontend Types + API | `types/political.ts`, `lib/api/politicalService.ts` | frontend-deeportal |
 | Swarm Integration (2) | `political-integration.ts`, `political-crossref.ts` | backend-swarm |
 
-## Data Sources (all FREE)
+## Data Sources (all FREE, all AUTOMATED — no manual CSV) 🆕
 
-| Source | Cost | Status |
-|--------|------|--------|
-| KPU Open Data | Free | ✅ |
-| BPS WebAPI | Free | ✅ |
-| Google Trends | Free (pytrends) | ✅ |
-| GDELT | Free | ✅ |
-| News API | Free tier | ✅ |
-| KPU Sirekap | Free (elections) | ✅ |
-| OpenStreetMap | Free | ✅ |
+| Source | Method | Cost | Status |
+|--------|--------|------|--------|
+| KPU Open Data | **Auto-scrape** (HTML + JSON API) | Free | ✅ No CSV needed |
+| BPS WebAPI | API (free registration) | Free | ✅ |
+| Google Trends | pytrends (free library) | Free | ✅ |
+| GDELT | API (free, no key) | Free | ✅ |
+| News API | API (free tier 100/day) | Free | ✅ |
+| KPU Sirekap | API (election period) | Free | ✅ |
+| OpenStreetMap | Overpass API (free) | Free | ✅ |
 
 ## Cross-References
 
