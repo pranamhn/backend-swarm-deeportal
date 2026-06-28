@@ -321,3 +321,88 @@ Browser → POST /api/v1/population/segment/build → Next.js rewrite → Flask 
 "I want to add a social platform..."
   → backend-swarm-deeportal: scripts/run_<platform>_simulation.py + src/types/swarm.ts
 ```
+
+---
+
+## Improvement Recommendations
+
+### 🔴 Critical (Should Fix Now)
+
+| # | Issue | Repo | Impact | Recommendation |
+|---|-------|------|--------|----------------|
+| 1 | **No shared types** | All 3 | Every API change requires manual sync of types across Python ↔ TypeScript ↔ TypeScript | Create a shared `types/` package (or generate TypeScript types from Python/OpenAPI schemas) |
+| 2 | **population_routes.py hardcoded SQLite** | backend-deeportal | New population endpoints fail in production (MySQL) | ✅ FIXED — now uses `holdco.db.get_conn()` |
+| 3 | **No API documentation** | backend-deeportal | Flask API undocumented; only Swarm has `openapi.json` | Generate OpenAPI spec for Flask routes (Flask-RESTX, apispec, or manual) |
+| 4 | **Raw SQL strings** | backend-deeportal | Schema changes require manual SQL migration; no rollback | Adopt SQLAlchemy or Alembic for migrations; or at minimum versioned `.sql` files |
+
+### 🟡 High (Next Sprint)
+
+| # | Issue | Repo | Impact | Recommendation |
+|---|-------|------|--------|----------------|
+| 5 | **OASIS subprocess fragility** | backend-swarm | Python scripts spawned via `child_process` — hard to debug, no error recovery | Containerize OASIS as a microservice with HTTP API, or use gRPC |
+| 6 | **Two API proxies** | frontend | `/api/*` rewrites to Flask, `/v1/swarm/*` to Express — inconsistent URL patterns | Unify under single API gateway pattern: `/api/v1/*` → Flask, `/api/v2/swarm/*` → Express |
+| 7 | **No CI/CD** | All 3 | No automated tests on push, no deployment pipeline | Add GitHub Actions: lint → test → build → deploy preview per PR |
+| 8 | **Two databases** | backend-deeportal + backend-swarm | MySQL + PostgreSQL — double ops overhead, no cross-db queries | Consolidate to PostgreSQL (has JSONB, pgvector for Swarm, and MySQL compatibility); or document why both are needed |
+| 9 | **Duplicate AI config** | backend-deeportal + backend-swarm | Both configure DeepSeek separately — drift risk | Extract AI config to shared env or config service |
+
+### 🟢 Medium (Backlog)
+
+| # | Issue | Repo | Impact | Recommendation |
+|---|-------|------|--------|----------------|
+| 10 | **Python + TypeScript split** | All 3 | New devs must know both languages | Long-term: consider consolidating backend-deeportal to TypeScript (NestJS/Fastify) for unified stack; short-term: document clearly |
+| 11 | **No connection pooling** | backend-deeportal | MySQL connections opened per-request — doesn't scale | Add connection pooling (SQLAlchemy pool, or pymysql pool) |
+| 12 | **WebSocket only for ingestion** | backend-deeportal | Real-time limited to one event type | Extend WebSocket or replace with SSE for all real-time updates |
+| 13 | **No monitoring/alerting** | All 3 | No visibility into errors, latency, or usage in production | Add Sentry for errors, Prometheus metrics, or at minimum structured logging to a central service |
+| 14 | **Committed .DS_Store files** | frontend-deeportal | Noise in git history | Add `.DS_Store` to `.gitignore` and remove from tracking |
+| 15 | **No rate limiting on Swarm** | backend-swarm | risk of AI cost explosion | Rate limit per user tier (already in middleware, verify enabled) |
+
+### 🔵 Low (Nice to Have)
+
+| # | Issue | Repo | Impact | Recommendation |
+|---|-------|------|--------|----------------|
+| 16 | **No monorepo tooling** | All 3 | Hard to coordinate changes across repos | Use Turborepo, Nx, or pnpm workspaces; or at minimum a `Makefile` with cross-repo commands |
+| 17 | **No E2E tests** | All 3 | No cross-repo integration tests | Add Playwright tests covering full user flows across all 3 repos |
+| 18 | **Inconsistent error formats** | backend-deeportal vs backend-swarm | Frontend must handle two different error shapes | Standardize on `{ success: bool, error: { code, message, retryable } }` (Swarm format is better) |
+
+---
+
+## Architecture Comparison: Current vs Recommended
+
+### Current
+```
+frontend-deeportal (Next.js)
+  ├── /api/* → backend-deeportal (Flask + MySQL) [Company Data]
+  └── /v1/swarm/* → backend-swarm-deeportal (Express + PostgreSQL) [AI Engine]
+  
+Issues:
+  • 3 repos, 2 languages, 2 databases
+  • No shared types
+  • Manual API sync
+```
+
+### Recommended (6-month target)
+```
+frontend-deeportal (Next.js)
+  └── /api/v1/* → API Gateway (new or Nginx)
+        ├── /api/v1/companies/* → backend-deeportal (Flask + MySQL)
+        ├── /api/v1/population/* → backend-deeportal
+        └── /api/v1/swarm/* → backend-swarm-deeportal (Express + PostgreSQL)
+
+  + shared-types/  (TypeScript + Python type stubs generated from OpenAPI)
+  + .github/workflows/  (CI/CD for all repos)
+  
+Benefits:
+  • Unified API surface (/api/v1/*)
+  • Generated types prevent drift
+  • CI/CD on every PR
+```
+
+### Priority Quick-Wins (1-2 days each)
+
+| Rank | Task | Effort | Impact |
+|------|------|--------|--------|
+| 1 | Add `.DS_Store` to `.gitignore` + remove from tracking | 5 min | Clean git |
+| 2 | Generate OpenAPI spec for Flask routes | 2 hours | Documentation |
+| 3 | Standardize error format across both backends | 1 hour | DX |
+| 4 | Add GitHub Actions CI (lint + test) | 2 hours | Quality |
+| 5 | Extract AI config to shared env pattern | 1 hour | Consistency |
