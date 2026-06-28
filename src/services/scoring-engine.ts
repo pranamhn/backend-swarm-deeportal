@@ -123,16 +123,30 @@ export function calculateConfidence(
 // ── Weight Maps ──
 function getWeights(predictionType: string): Record<string, number> {
   const weightMaps: Record<string, Record<string, number>> = {
-    funding: {
-      "Revenue Traction": 0.25,
-      "Growth Rate": 0.20,
-      "Market Size": 0.15,
-      "Founder Quality": 0.15,
-      "Unit Economics": 0.10,
-      "Investor Fit": 0.10,
-      "Risk Adjustment": 0.05,
+    // Startup Intelligence
+    funding_signal: {
+      "Funding Probability": 0.30,
+      "Investor Interest": 0.20,
+      "Sector Momentum": 0.15,
+      "Founder Signal": 0.15,
+      "Traction Signal": 0.20,
     },
-    acquisition: {
+    growth_signal: {
+      "Revenue Growth Rate": 0.30,
+      "Market Demand": 0.25,
+      "Team Capability": 0.15,
+      "Product-Market Fit": 0.15,
+      "Competitive Position": 0.15,
+    },
+    investor_fit: {
+      "Sector Alignment": 0.25,
+      "Stage Match": 0.20,
+      "Check Size Fit": 0.15,
+      "Geography Match": 0.15,
+      "Founder-Investor Chemistry": 0.15,
+      "Portfolio Synergy": 0.10,
+    },
+    mna_signal: {
       "Strategic Synergy": 0.25,
       "Product Fit": 0.20,
       "Customer Overlap": 0.15,
@@ -141,25 +155,92 @@ function getWeights(predictionType: string): Record<string, number> {
       "Team Quality": 0.10,
       "Integration Risk": 0.05,
     },
-    ipo: {
-      "Financial Maturity": 0.25,
-      "Growth Trajectory": 0.20,
-      "Governance & Compliance": 0.15,
-      "Market Conditions": 0.15,
-      "Comparable Valuations": 0.10,
-      "Institutional Appetite": 0.10,
-      "Regulatory Risk": 0.05,
+    business_risk: {
+      "Financial Risk": 0.25,
+      "Market Risk": 0.20,
+      "Operational Risk": 0.15,
+      "Legal/Regulatory Risk": 0.15,
+      "Competitive Risk": 0.15,
+      "Reputation Risk": 0.10,
     },
-    market_dynamics: {
-      "Supply/Demand Balance": 0.20,
-      "Regulatory Impact": 0.20,
-      "Competitive Dynamics": 0.15,
-      "Consumer Sentiment": 0.15,
-      "Macro Factors": 0.15,
-      "Technology Disruption": 0.10,
-      "Seasonality": 0.05,
+    // Market Intelligence
+    market_opportunity: {
+      "Market Size": 0.25,
+      "Growth Rate": 0.25,
+      "Competition Level": 0.15,
+      "Entry Barriers": 0.15,
+      "Regulatory Environment": 0.10,
+      "Timing": 0.10,
     },
+    market_expansion: {
+      "Market Attractiveness": 0.30,
+      "Competitive Landscape": 0.20,
+      "Regulatory Feasibility": 0.15,
+      "Operational Readiness": 0.15,
+      "Cultural Fit": 0.10,
+      "Partnership Potential": 0.10,
+    },
+    revenue_potential: {
+      "TAM/SAM/SOM": 0.25,
+      "Pricing Power": 0.20,
+      "Customer Acquisition Efficiency": 0.20,
+      "Retention & Expansion": 0.15,
+      "Unit Economics": 0.20,
+    },
+    // Political Intelligence
+    political_risk: {
+      "Regulatory Stability": 0.25,
+      "Policy Continuity": 0.20,
+      "Government Relations": 0.15,
+      "Corruption Risk": 0.15,
+      "Social Stability": 0.15,
+      "International Relations": 0.10,
+    },
+    regulation_impact: {
+      "Direct Business Impact": 0.30,
+      "Compliance Cost": 0.25,
+      "Timeline Pressure": 0.15,
+      "Industry Resistance": 0.15,
+      "Precedent Risk": 0.15,
+    },
+    policy_direction: {
+      "Government Priority": 0.25,
+      "Public Support": 0.20,
+      "Industry Alignment": 0.20,
+      "Budget Feasibility": 0.15,
+      "Implementation Timeline": 0.10,
+      "Political Will": 0.10,
+    },
+    // Financial Intelligence
+    credit_risk: {
+      "Debt-to-Equity": 0.25,
+      "Cash Flow Coverage": 0.25,
+      "Collateral Quality": 0.15,
+      "Payment History": 0.15,
+      "Industry Risk": 0.10,
+      "Management Quality": 0.10,
+    },
+    financing_eligibility: {
+      "Revenue Threshold": 0.25,
+      "Time in Business": 0.20,
+      "Credit Score": 0.20,
+      "Business Plan Quality": 0.15,
+      "Collateral Availability": 0.10,
+      "Sector Eligibility": 0.10,
+    },
+    cashflow_health: {
+      "Operating Cash Flow": 0.30,
+      "Burn Rate": 0.25,
+      "Runway (months)": 0.20,
+      "Revenue Collection": 0.15,
+      "Expense Management": 0.10,
+    },
+    // Legacy
+    funding: { "Revenue Traction": 0.25, "Growth Rate": 0.20, "Market Size": 0.15, "Founder Quality": 0.15, "Unit Economics": 0.10, "Investor Fit": 0.10, "Risk Adjustment": 0.05 },
+    acquisition: { "Strategic Synergy": 0.25, "Product Fit": 0.20, "Customer Overlap": 0.15, "Technology Fit": 0.15, "Financial Health": 0.10, "Team Quality": 0.10, "Integration Risk": 0.05 },
+    ipo: { "Financial Maturity": 0.25, "Growth Trajectory": 0.20, "Governance & Compliance": 0.15, "Market Conditions": 0.15, "Comparable Valuations": 0.10, "Institutional Appetite": 0.10, "Regulatory Risk": 0.05 },
+    market_dynamics: { "Supply/Demand Balance": 0.20, "Regulatory Impact": 0.20, "Competitive Dynamics": 0.15, "Consumer Sentiment": 0.15, "Macro Factors": 0.15, "Technology Disruption": 0.10, "Seasonality": 0.05 },
   };
 
-  return weightMaps[predictionType] || weightMaps.funding;
+  return weightMaps[predictionType] || weightMaps.funding_signal;
 }

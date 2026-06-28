@@ -3,7 +3,15 @@ import { z } from "zod";
 // ── Mode ──
 export const swarmModeSchema = z.enum(["social_sentiment", "investment_prediction"]);
 export const socialSubTypeSchema = z.enum(["general", "political_election", "ipo_sentiment", "crisis_sentiment"]);
-export const predictionTypeSchema = z.enum(["funding", "acquisition", "ipo", "market_dynamics", "business_risk", "pricing", "customer_behavior", "competitive_response"]);
+export const predictionTypeSchema = z.enum([
+  // MVP Modes (from predict-deeportal-plan.md)
+  "funding_signal", "growth_signal", "investor_fit", "mna_signal", "business_risk",
+  "market_opportunity", "market_expansion", "revenue_potential",
+  "political_risk", "regulation_impact", "policy_direction",
+  "credit_risk", "financing_eligibility", "cashflow_health",
+  // Legacy (backward compat)
+  "funding", "acquisition", "ipo", "market_dynamics", "pricing", "customer_behavior", "competitive_response",
+]);
 export const electionTypeSchema = z.enum(["gubernur", "bupati", "walikota", "presiden", "caleg"]);
 export const simulationModeSchema = z.enum(["fast", "balanced", "deep"]);
 export const platformSchema = z.enum(["twitter", "reddit"]);

@@ -1,10 +1,31 @@
 // ── Swarm Deeportal — Core Type Definitions ──
 
+// ── Mode Categories (from predict-deeportal-plan.md) ──
+export type ModeCategory =
+  | "startup_intelligence"
+  | "market_intelligence"
+  | "social_sentiment"
+  | "political_intelligence"
+  | "financial_intelligence"
+  | "scenario_simulation";
+
 // ── Mode ──
 export type SwarmMode = "social_sentiment" | "investment_prediction";
 
+// ── MVP Prediction Types (8 core types from predict-deeportal-plan.md) ──
 export type SocialSubType = "general" | "political_election" | "ipo_sentiment" | "crisis_sentiment";
-export type PredictionType = "funding" | "acquisition" | "ipo" | "market_dynamics" | "business_risk" | "pricing" | "customer_behavior" | "competitive_response";
+export type PredictionType =
+  // Startup Intelligence
+  | "funding_signal" | "growth_signal" | "investor_fit" | "mna_signal" | "business_risk"
+  // Market Intelligence
+  | "market_opportunity" | "market_expansion" | "revenue_potential"
+  // Political Intelligence
+  | "political_risk" | "regulation_impact" | "policy_direction"
+  // Financial Intelligence
+  | "credit_risk" | "financing_eligibility" | "cashflow_health"
+  // Legacy (backward compat)
+  | "funding" | "acquisition" | "ipo" | "market_dynamics" | "pricing" | "customer_behavior" | "competitive_response";
+
 export type ElectionType = "gubernur" | "bupati" | "walikota" | "presiden" | "caleg";
 export type SimulationMode = "fast" | "balanced" | "deep";
 
@@ -12,6 +33,57 @@ export type Platform = "twitter" | "reddit";
 export type Market = "SEA" | "US" | "EU";
 export type ScenarioType = "optimistic" | "neutral" | "pessimistic";
 export type PoliticalScenario = "baseline" | "debate_impact" | "scandal_crisis" | "regional_battleground" | "multi_candidate";
+
+// ── Mode Category mapping ──
+export const MODE_CATEGORY_MAP: Record<PredictionType, ModeCategory> = {
+  funding_signal: "startup_intelligence",
+  growth_signal: "startup_intelligence",
+  investor_fit: "startup_intelligence",
+  mna_signal: "startup_intelligence",
+  business_risk: "startup_intelligence",
+  market_opportunity: "market_intelligence",
+  market_expansion: "market_intelligence",
+  revenue_potential: "market_intelligence",
+  political_risk: "political_intelligence",
+  regulation_impact: "political_intelligence",
+  policy_direction: "political_intelligence",
+  credit_risk: "financial_intelligence",
+  financing_eligibility: "financial_intelligence",
+  cashflow_health: "financial_intelligence",
+  // Legacy
+  funding: "startup_intelligence",
+  acquisition: "startup_intelligence",
+  ipo: "startup_intelligence",
+  market_dynamics: "market_intelligence",
+  pricing: "market_intelligence",
+  customer_behavior: "market_intelligence",
+  competitive_response: "market_intelligence",
+};
+
+export const MODE_LABELS: Record<PredictionType, { label: string; icon: string; category: ModeCategory }> = {
+  funding_signal: { label: "💰 Funding Signal", icon: "💰", category: "startup_intelligence" },
+  growth_signal: { label: "📈 Growth Signal", icon: "📈", category: "startup_intelligence" },
+  investor_fit: { label: "🧲 Investor Fit", icon: "🧲", category: "startup_intelligence" },
+  mna_signal: { label: "🤝 M&A Signal", icon: "🤝", category: "startup_intelligence" },
+  business_risk: { label: "⚠️ Business Risk", icon: "⚠️", category: "startup_intelligence" },
+  market_opportunity: { label: "📊 Market Opportunity", icon: "📊", category: "market_intelligence" },
+  market_expansion: { label: "🌏 Market Expansion", icon: "🌏", category: "market_intelligence" },
+  revenue_potential: { label: "💵 Revenue Potential", icon: "💵", category: "market_intelligence" },
+  political_risk: { label: "🏛️ Political Risk", icon: "🏛️", category: "political_intelligence" },
+  regulation_impact: { label: "📜 Regulation Impact", icon: "📜", category: "political_intelligence" },
+  policy_direction: { label: "🧭 Policy Direction", icon: "🧭", category: "political_intelligence" },
+  credit_risk: { label: "🏦 Credit Risk", icon: "🏦", category: "financial_intelligence" },
+  financing_eligibility: { label: "💳 Financing Eligibility", icon: "💳", category: "financial_intelligence" },
+  cashflow_health: { label: "🧾 Cashflow Health", icon: "🧾", category: "financial_intelligence" },
+  // Legacy
+  funding: { label: "💰 Funding Prediction", icon: "💰", category: "startup_intelligence" },
+  acquisition: { label: "🤝 Acquisition Fit", icon: "🤝", category: "startup_intelligence" },
+  ipo: { label: "🏛️ IPO Readiness", icon: "🏛️", category: "startup_intelligence" },
+  market_dynamics: { label: "📊 Market Dynamics", icon: "📊", category: "market_intelligence" },
+  pricing: { label: "💲 Pricing Simulation", icon: "💲", category: "market_intelligence" },
+  customer_behavior: { label: "👥 Customer Behavior", icon: "👥", category: "market_intelligence" },
+  competitive_response: { label: "⚔️ Competitive Response", icon: "⚔️", category: "market_intelligence" },
+};
 
 // ── Project ──
 export type ProjectStatus =
