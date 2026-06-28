@@ -90,7 +90,7 @@ SECTION MAP
                     │  (DeepSeek JSON mode)        │
                     │         │                    │
                     │  Knowledge Graph Builder     │
-                    │  (Nodes + Edges + pgvector)  │
+                    │  (Nodes + Edges + MySQL JSON)  │
                     └─────────────┬───────────────┘
                                   │
               ┌───────────────────┼───────────────────┐
@@ -195,7 +195,7 @@ Export & Share                     • PDF download
 │  │  ┌──────────┐  ┌───────────┐  ┌────────────┐  ┌───────────────┐  │  │
 │  │  │ Input    │  │ Ontology  │  │ Knowledge  │  │ ReACT Report  │  │  │
 │  │  │ Handler  │─►│ Generator │─►│ Graph      │─►│ Agent         │  │  │
-│  │  │          │  │ (DeepSeek)│  │ (pgvector) │  │ (DeepSeek     │  │  │
+│  │  │          │  │ (DeepSeek)│  │ (MySQL JSON) │  │ (DeepSeek     │  │  │
 │  │  │ PDF/TXT  │  │           │  │            │  │  Reasoner)    │  │  │
 │  │  └──────────┘  └───────────┘  └────────────┘  └───────────────┘  │  │
 │  └──────────────────────────────────────────────────────────────────┘  │
@@ -228,7 +228,7 @@ Export & Share                     • PDF download
 │                                                                         │
 │  ┌──────────────────────────────────────────────────────────────────┐  │
 │  │                    INFRASTRUCTURE                                  │  │
-│  │  • PostgreSQL + pgvector (knowledge graph, embeddings, projects)  │  │
+│  │  • MySQL (knowledge graph, embeddings, projects)  │  │
 │  │  • Redis + BullMQ (job queue, session cache, rate limiting)       │  │
 │  │  • S3 / Cloudflare R2 (file uploads, report PDFs)                 │  │
 │  │  • DeepSeek API (primary AI) + OpenAI (fallback)                  │  │
@@ -281,7 +281,7 @@ Swarm Deeportal mendukung **dua mode prediksi** yang bisa dipilih user sesuai ke
 │  └─────────────────────────┘    └─────────────────────────────┘  │
 │                                                                  │
 │  Shared Infrastructure:                                          │
-│  • Knowledge Graph (PostgreSQL + pgvector)                       │
+│  • Knowledge Graph (MySQL)                       │
 │  • Ontology Generation (LLM)                                     │
 │  • DeepSeek AI (extraction, reasoning, report)                   │
 │  • ReACT Report Agent                                            │
@@ -436,7 +436,7 @@ ReACT Report → Deep Interaction
 │  ┌────────────┐  ┌───────────┐  ┌──────────┐  ┌─────────────┐  │
 │  │ Input      │  │ Ontology  │  │ Knowledge│  │ ReACT        │  │
 │  │ Handler    │  │ Generator │  │ Graph    │  │ Report Agent │  │
-│  │            │  │           │  │ (pgvector)│  │              │  │
+│  │            │  │           │  │ (MySQL JSON)│  │              │  │
 │  │ PDF/TXT    │  │ LLM       │  │          │  │ Plan→Query   │  │
 │  │ CSV/XLSX   │  │ designs   │  │ Nodes +  │  │ →Reflect     │  │
 │  │ DB signals │  │ entity    │  │ Edges +  │  │ →Write       │  │
@@ -451,7 +451,7 @@ ReACT Report → Deep Interaction
 │                                                                  │
 │  ┌────────────────────────────────────────────────────────────┐  │
 │  │  Infrastructure (shared)                                    │  │
-│  │  • PostgreSQL + pgvector (graph + embeddings)              │  │
+│  │  • MySQL (graph + embeddings)              │  │
 │  │  • Redis + BullMQ (job queue)                              │  │
 │  │  • SSE (real-time streaming)                               │  │
 │  │  • S3/R2 (file storage)                                    │  │
@@ -3485,7 +3485,7 @@ New Swarm-Specific Components (under components/swarm/):
 ```text
 - Next.js API Routes (under app/api/swarm/)
 - PostgreSQL 16+ (existing Deeportal DB, add predict_* tables)
-- pgvector extension for knowledge graph embeddings
+- MySQL JSON extension for knowledge graph embeddings
 - Redis 7+ (existing, add BullMQ queue for simulation jobs)
 - BullMQ for async simulation processing
 - SSE for real-time simulation progress
@@ -3946,8 +3946,8 @@ Zep is MiroFish's backbone for knowledge graph and agent memory. It offers:
 |-----------|-----------|------------------------------|---------|
 | Entity extraction | Zep auto-extract (generic) | **DeepSeek + custom ontology per domain** | 🏆 Built-in |
 | Relationship building | Zep edges (automatic, black-box) | **Custom graph builder + ontology-guided** | 🏆 Built-in |
-| Graph storage | Zep Cloud ($0.01+/msg, external latency) | **PostgreSQL + pgvector** (internal, zero latency, free) | 🏆 Built-in |
-| Graph search | Zep search API | **pgvector similarity + SQL queries** | 🏆 Built-in |
+| Graph storage | Zep Cloud ($0.01+/msg, external latency) | **MySQL** (internal, zero latency, free) | 🏆 Built-in |
+| Graph search | Zep search API | **MySQL JSON similarity + SQL queries** | 🏆 Built-in |
 | Agent memory | Zep episodic memory (user/session scoped) | **JSONB `memory` field on prediction_agents** | 🏆 Built-in |
 | Vendor lock-in | Yes — all data in Zep Cloud | No — all data in own PostgreSQL | 🏆 Built-in |
 | Cost at scale | ~$500+/mo for 10K predictions | **$0** (existing infra) | 🏆 Built-in |
@@ -3963,7 +3963,7 @@ CREATE TABLE agent_episodic_memory (
   agent_type TEXT NOT NULL,          -- 'investor', 'founder', 'advisor', etc.
   project_id UUID REFERENCES prediction_projects(id),
   episode JSONB NOT NULL,            -- { loop, decision, outcome, lesson }
-  embedding VECTOR(1536),            -- pgvector for similarity search
+  embedding VECTOR(1536),            -- MySQL JSON for similarity search
   created_at TIMESTAMP DEFAULT NOW()
 );
 
@@ -3981,7 +3981,7 @@ This gives us Zep-style cross-session memory **without Zep's cost or latency**.
 
 ```text
 Zep adds: external dependency, cost, latency, vendor lock-in
-Zep removes: nothing we can't build in 1 day with pgvector
+Zep removes: nothing we can't build in 1 day with MySQL JSON
 
 Decision: Build episodic memory in PostgreSQL, skip Zep entirely.
 Savings: ~$6,000/year at 10K predictions/month scale.
@@ -4301,7 +4301,7 @@ Dengan fitur ini, Deeportal.ai tidak hanya menjadi database startup seperti Crun
 |-----------|----------|-------------------|--------|
 | **Simulation Type** | Social media (Twitter + Reddit only) | 9 types: Funding, Acquisition, Market, Risk, Pricing, Customer, Competitive, **IPO**, **Market Dynamics** | 🏆 Swarm |
 | **AI Provider** | OpenAI-compatible (generic) | **DeepSeek** (primary) + OpenAI fallback, 90% cheaper, bilingual EN/ZH | 🏆 Swarm |
-| **Knowledge Graph** | Zep Cloud (external, costs $$) | Custom in-house + pgvector (no external dependency) | 🏆 Swarm |
+| **Knowledge Graph** | Zep Cloud (external, costs $$) | Custom in-house + MySQL JSON (no external dependency) | 🏆 Swarm |
 | **Ontology** | ✓ LLM-designed per project | ✓ LLM-designed + domain-specific templates | 🏆 Swarm (richer) |
 | **Feedback Loop** | ✓ Simulation → Zep enrichment | ✓ Simulation → graph enrichment + weight auto-tuning | 🏆 Swarm |
 | **Agents** | Standard personas | Standard + **Adversarial Agent** (Devil's Advocate) + IPO/Market-specific agents | 🏆 Swarm |
@@ -4310,7 +4310,7 @@ Dengan fitur ini, Deeportal.ai tidak hanya menjadi database startup seperti Crun
 | **Deep Interaction** | ✓ Interview agents, chat with report | ✓ Interview agents (mid-sim + post-sim) + **Live Graph Viz** | 🏆 Swarm (richer) |
 | **Frontend** | Vue 3 + Vite (standalone) | **Next.js 16** integrated into existing Deeportal app (shared auth, DB, cache) | 🏆 Swarm |
 | **UI Design System** | Custom (no existing brand) | **Deeportal design system** (Inter + Jakarta Sans, brand colors, existing components) | 🏆 Swarm |
-| **Production Readiness** | Flask + Docker (basic) | PostgreSQL + pgvector + Redis + BullMQ + SSE + Vercel deploy | 🏆 Swarm |
+| **Production Readiness** | Flask + Docker (basic) | MySQL + Redis + BullMQ + SSE + Vercel deploy | 🏆 Swarm |
 | **i18n** | en/zh (locale files) | en/zh via DeepSeek bilingual + next-intl ready | 🏆 Swarm |
 | **Parallel Simulation** | Twitter + Reddit (2 platforms) | Multi-market (SEA/US/EU) + scenario branching + signal injection | 🏆 Swarm |
 | **Prediction Types** | 1 (social sentiment prediction) | 9 distinct prediction types across business domains | 🏆 Swarm |
@@ -5655,7 +5655,7 @@ Status: `[ ]` = not started, `[~]` = in progress, `[x]` = done
 | **API Routes** | `routes/*.ts` (5 files) | 500+ | Express, 14 endpoints |
 | **Simulation Queue** | `services/simulation-queue.ts` | 120+ | BullMQ, 7-step pipeline |
 | **Ontology Generator** | `services/ontology-generator.ts` | 100+ | LLM + domain-specific defaults |
-| **Graph Builder** | `services/graph-builder.ts` | 100+ | AI extraction + pgvector |
+| **Graph Builder** | `services/graph-builder.ts` | 100+ | AI extraction + MySQL JSON |
 | **Agent Generator** | `services/agent-generator.ts` | 160+ | Political + social + investment personas |
 | **Simulation Engine** | `services/simulation-engine.ts` | 140+ | Multi-scenario, feedback loop |
 | **Report Generator** | `services/report-generator.ts` | 120+ | ReACT-style with DeepSeek |

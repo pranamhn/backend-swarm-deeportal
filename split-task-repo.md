@@ -279,6 +279,137 @@ Browser → POST /api/v1/population/segment/build → Next.js rewrite → Flask 
 
 ---
 
+## How the 3 Repos Connect
+
+### Network Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    YOUR MACHINE / SERVER                         │
+│                                                                  │
+│  ┌──────────────────────────────────────────────────────────┐   │
+│  │  frontend-deeportal (Next.js)                             │   │
+│  │  Port 3000                                                │   │
+│  │                                                           │   │
+│  │  next.config.js rewrites:                                 │   │
+│  │    /api/*        → http://127.0.0.1:8080/api/*           │   │
+│  │    /v1/swarm/*   → http://127.0.0.1:5002/api/swarm/*     │   │
+│  └──────────┬───────────────────────┬───────────────────────┘   │
+│             │                       │                            │
+│             ▼                       ▼                            │
+│  ┌──────────────────────┐  ┌──────────────────────────────┐    │
+│  │  backend-deeportal    │  │  backend-swarm-deeportal      │    │
+│  │  Flask :8080          │  │  Express :5002                │    │
+│  │                       │  │                               │    │
+│  │  MySQL (deeportal)    │  │  MySQL (deeportal)            │    │
+│  │  Redis —              │  │  Redis (BullMQ queue)         │    │
+│  │  WebSocket (ingest)   │  │  DeepSeek API (external)      │    │
+│  │  DeepSeek/Claude API  │  │  Python subprocess (OASIS)    │    │
+│  └──────────────────────┘  └──────────────────────────────┘    │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Connection Details
+
+#### 1. Frontend → Backend (Flask)
+
+| Setting | Value |
+|---------|-------|
+| **Proxy method** | Next.js `rewrites()` in `next.config.js` |
+| **Pattern** | `/api/*` → `http://127.0.0.1:8080/api/*` |
+| **Auth** | Cookies (session-based, `withCredentials: true`) |
+| **WebSocket** | `socket.io-client` connects to Flask server directly |
+| **Env var** | `HOLDCO_BACKEND_ORIGIN=http://127.0.0.1:8080` |
+
+```
+Browser → https://deeportal.ai/api/v1/companies
+  → Next.js rewrite
+  → http://127.0.0.1:8080/api/v1/companies
+  → Flask handles request, queries MySQL
+  → Response back through Next.js
+```
+
+#### 2. Frontend → Swarm (Express)
+
+| Setting | Value |
+|---------|-------|
+| **Proxy method** | Next.js `rewrites()` or direct axios call |
+| **Pattern** | `/v1/swarm/*` → `http://127.0.0.1:5002/api/swarm/*` |
+| **Auth** | `x-user-id` header |
+| **SSE** | EventSource connects to `:5002/api/swarm/simulation/:id/stream` |
+| **Env var** | `NEXT_PUBLIC_SWARM_ORIGIN=http://127.0.0.1:5002` |
+
+```
+Browser → https://deeportal.ai/v1/swarm/projects
+  → Next.js rewrite or direct
+  → http://127.0.0.1:5002/api/swarm/projects
+  → Express handles, queries MySQL, enqueues BullMQ
+```
+
+#### 3. Swarm Python Subprocess (OASIS)
+
+| Setting | Value |
+|---------|-------|
+| **Launch method** | `child_process.spawn("python3", ["scripts/run_...py", projectId])` |
+| **IPC** | Filesystem: `ipc/commands/` → `ipc/responses/` |
+| **Network** | No network access needed (internal simulation only) |
+| **Lifecycle** | Per-simulation, cleaned up after completion |
+
+#### 4. Shared Resources
+
+| Resource | Used By | Connection String |
+|----------|---------|-------------------|
+| **MySQL** | Flask + Express | `mysql://root:password@localhost:3306/deeportal` |
+| **Redis** | Express (BullMQ) | `redis://localhost:6379` |
+| **DeepSeek API** | Flask + Express | `https://api.deepseek.com/v1` (same key) |
+
+#### 5. Local Development Setup
+
+```bash
+# Terminal 1: Flask backend
+cd backend-deeportal
+source .venv/bin/activate
+python -m orchestrator.webapp --host 127.0.0.1 --port 8080
+
+# Terminal 2: Swarm backend
+cd backend-swarm-deeportal
+npm run dev    # tsx watch src/index.ts → :5002
+
+# Terminal 3: Frontend
+cd frontend-deeportal
+npm run dev    # next dev → :3000
+
+# All 3 running → open http://localhost:3000
+```
+
+#### 6. Production Deployment
+
+```
+┌──────────────────────────────────────────────┐
+│  Vercel (frontend-deeportal)                 │
+│  • Next.js optimized, auto-scaling           │
+│  • rewrites() proxy to internal backends     │
+└──────────────┬───────────────────────────────┘
+               │
+    ┌──────────┴──────────┐
+    ▼                     ▼
+┌──────────────┐  ┌──────────────────┐
+│  Railway /   │  │  Railway /       │
+│  Fly.io      │  │  Fly.io          │
+│  Flask :8080 │  │  Express :5002   │
+└──────┬───────┘  └────────┬─────────┘
+       │                   │
+       └─────────┬─────────┘
+                 ▼
+    ┌────────────────────────┐
+    │  MySQL (PlanetScale /   │
+    │  AWS RDS / Supabase)   │
+    │  + Redis (Upstash)     │
+    └────────────────────────┘
+```
+
+---
+
 ## Development Ownership
 
 | Feature Area | Primary Repo | Secondary Repo |
