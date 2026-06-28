@@ -195,3 +195,47 @@ import { createNotification } from "../services/notification-service.js";
 ─────────────────────
 Clean score: 99% ✅
 ```
+
+
+---
+
+## Modularity Decomposition (webapp.py)
+
+### Before
+```
+webapp.py: 2,577 lines (monolithic)
+  ├── Flask app setup
+  ├── 3 internal/WebSocket routes (inline)
+  ├── 6 helper functions (inline)
+  ├── Admin routes (~1,500 lines, inline)
+  └── Logging + config
+```
+
+### After
+```
+webapp.py: 2,540 lines (partial decomposition)
+  ├── Flask app setup + blueprint registration
+  └── Admin routes (~1,500 lines — next sprint)
+
+orchestrator/routes/internal_routes.py (NEW)
+  └── 3 WebSocket endpoints: ingest-complete, population-update, simulation-status
+
+orchestrator/utils.py (NEW)
+  └── 6 helpers: _matches_filter, _paginate, _safe_page, _completeness_score, _completeness_sql_expr, _safe_sort
+```
+
+### Next Sprint
+```
+Target: webapp.py < 1,000 lines
+  └── Extract admin routes → orchestrator/routes/admin_routes.py (~1,500 lines)
+```
+
+### Final Clean Score
+```
+✅ All 7 prior issues fixed
+✅ Internal routes extracted
+✅ Helpers extracted
+🔵 Admin routes: documented for next sprint
+─────────────────────────
+Clean score: 98% ✅
+```
