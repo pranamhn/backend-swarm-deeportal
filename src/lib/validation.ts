@@ -14,7 +14,7 @@ export const predictionTypeSchema = z.enum([
 ]);
 export const electionTypeSchema = z.enum(["gubernur", "bupati", "walikota", "presiden", "caleg"]);
 export const simulationModeSchema = z.enum(["fast", "balanced", "deep"]);
-export const platformSchema = z.enum(["twitter", "reddit"]);
+export const platformSchema = z.enum(["twitter", "reddit", "mastodon", "bluesky"]);
 export const marketSchema = z.enum(["SEA", "US", "EU"]);
 export const scenarioTypeSchema = z.enum(["optimistic", "neutral", "pessimistic"]);
 export const politicalScenarioSchema = z.enum(["baseline", "debate_impact", "scandal_crisis", "regional_battleground", "multi_candidate"]);

@@ -29,7 +29,7 @@ export type PredictionType =
 export type ElectionType = "gubernur" | "bupati" | "walikota" | "presiden" | "caleg";
 export type SimulationMode = "fast" | "balanced" | "deep";
 
-export type Platform = "twitter" | "reddit";
+export type Platform = "twitter" | "reddit" | "mastodon" | "bluesky";
 export type Market = "SEA" | "US" | "EU";
 export type ScenarioType = "optimistic" | "neutral" | "pessimistic";
 export type PoliticalScenario = "baseline" | "debate_impact" | "scandal_crisis" | "regional_battleground" | "multi_candidate";
