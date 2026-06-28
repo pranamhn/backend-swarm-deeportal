@@ -1841,8 +1841,10 @@ Social Listening:
 ## 19.6 Future Checklist (Phase 2-4)
 
 ```text
-[ ] 19.6.1 Google Trends integration — weekly search interest pull
-[ ] 19.6.2 News API + GDELT — political event detection pipeline
+[x] 19.6.1 Google Trends ✅ DONE
+    - scripts/ingest_external.py — Google Trends + pytrends (free) ✅ — weekly search interest pull
+[x] 19.6.2 News API + GDELT ✅ DONE
+    - scripts/ingest_external.py — News API + GDELT pipelines ✅ — political event detection pipeline
 [x] 19.6.3 Regional clustering ✅ DONE
     - holdco/political_analytics.py — K-means on 5+ dimensions ✅ — K-means on 5+ dimensions
 [x] 19.6.4 Historical pattern analysis ✅ DONE
@@ -1850,7 +1852,8 @@ Social Listening:
 [x] 19.6.5 Candidate-Region Fit score ✅ DONE
     - holdco/political_analytics.py — 5-factor matching ✅ — multi-factor matching
 [ ] 19.6.6 Real-time monitoring — KPU Sirekap integration
-[ ] 19.6.7 Media sentiment analysis — per region per candidate
+[x] 19.6.7 Media sentiment ✅ DONE
+    - scripts/ingest_external.py — keyword-based sentiment classifier ✅ — per region per candidate
 [x] 19.6.8 Cross-reference pipeline ✅ DONE
     - services/political-crossref.ts — political + population cross-ref ✅ — population + political data join
 ```
@@ -1860,10 +1863,10 @@ Social Listening:
 | Phase | Status | Items Done |
 |-------|--------|-----------|
 | Phase 1 — Foundation | ✅ 100% | 12/12 tasks |
-| Phase 2 — Analytics | ✅ 3/4 done | 3/4 |
-| Phase 3 — Advanced Scoring | ✅ 1/5 done | 1/5 |
+| Phase 2 — Analytics | ✅ 4/4 done | 4/4 |
+| Phase 3 — Advanced Scoring | ✅ 3/5 done | 3/5 |
 | Phase 4 — Real-time | ⏳ 0/4 (needs KPU Sirekap) |
-| **Total** | | **16 done, 9 planned** |
+| **Total** | | **19 done, 6 planned** |
 
 > **Phase 1 is complete.** Phases 2-4 can begin when Podes data, KPU Sirekap, or News API keys become available.
 
