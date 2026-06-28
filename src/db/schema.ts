@@ -204,3 +204,16 @@ export const swarmNotifications = pgTable("swarm_notifications", {
   read: boolean("read").default(false),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
+
+// ── Audit Log ──
+export const swarmAuditLog = pgTable("swarm_audit_log", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id").notNull(),
+  action: text("action").notNull(),
+  projectId: uuid("project_id"),
+  mode: text("mode"),
+  details: jsonb("details").$type<Record<string, unknown>>().default({}),
+  ip: text("ip"),
+  userAgent: text("user_agent"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});

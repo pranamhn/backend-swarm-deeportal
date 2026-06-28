@@ -1,0 +1,194 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Swarm Deeportal API",
+    "version": "0.1.0",
+    "description": "Dual-Mode AI Prediction Engine — Social Sentiment (Twitter/X + Reddit) + Investment Prediction (Funding, Acquisition, IPO, Market Dynamics)"
+  },
+  "servers": [
+    { "url": "http://localhost:5002", "description": "Local development" },
+    { "url": "https://api.deeportal.ai", "description": "Production" }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Health check",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/swarm/projects": {
+      "post": {
+        "summary": "Create swarm project",
+        "description": "Create a new prediction project. Mode: social_sentiment or investment_prediction. Social mode requires platforms[], political sub_type requires candidates[] + electionType. Investment mode requires predictionType.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["title", "mode"],
+                "properties": {
+                  "title": { "type": "string", "example": "Pilgub Jatim 2027 Prediction" },
+                  "mode": { "type": "string", "enum": ["social_sentiment", "investment_prediction"] },
+                  "subType": { "type": "string", "enum": ["general", "political_election", "ipo_sentiment", "crisis_sentiment"] },
+                  "electionType": { "type": "string", "enum": ["gubernur", "bupati", "walikota", "presiden", "caleg"] },
+                  "region": { "type": "string", "example": "Jawa Timur" },
+                  "platforms": { "type": "array", "items": { "type": "string", "enum": ["twitter", "reddit"] } },
+                  "seedTopics": { "type": "array", "items": { "type": "string" } },
+                  "candidates": { "type": "array", "items": { "type": "object", "properties": { "name": { "type": "string" }, "party": { "type": "string" } } } },
+                  "predictionType": { "type": "string", "enum": ["funding", "acquisition", "ipo", "market_dynamics", "business_risk", "pricing", "customer_behavior", "competitive_response"] },
+                  "timeHorizon": { "type": "string", "example": "6 months" },
+                  "simulationMode": { "type": "string", "enum": ["fast", "balanced", "deep"] },
+                  "markets": { "type": "array", "items": { "type": "string", "enum": ["SEA", "US", "EU"] } },
+                  "scenarios": { "type": "array", "items": { "type": "string" } },
+                  "agentCount": { "type": "integer", "default": 100 },
+                  "loops": { "type": "integer", "default": 10 }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Project created" },
+          "400": { "description": "Validation error" }
+        }
+      },
+      "get": {
+        "summary": "List projects",
+        "parameters": [
+          { "name": "page", "in": "query", "schema": { "type": "integer", "default": 1 } },
+          { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 20 } },
+          { "name": "mode", "in": "query", "schema": { "type": "string", "enum": ["social_sentiment", "investment_prediction"] } }
+        ],
+        "responses": { "200": { "description": "Paginated project list" } }
+      }
+    },
+    "/api/swarm/projects/{projectId}": {
+      "get": {
+        "summary": "Get project",
+        "parameters": [{ "name": "projectId", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }],
+        "responses": { "200": { "description": "Project details" }, "404": { "description": "Not found" } }
+      },
+      "patch": {
+        "summary": "Update project status",
+        "parameters": [{ "name": "projectId", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }],
+        "responses": { "200": { "description": "Updated" } }
+      },
+      "delete": {
+        "summary": "Delete project",
+        "parameters": [{ "name": "projectId", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }],
+        "responses": { "200": { "description": "Deleted" } }
+      }
+    },
+    "/api/swarm/simulation/{projectId}/start": {
+      "post": {
+        "summary": "Start simulation (enqueues to BullMQ)",
+        "parameters": [{ "name": "projectId", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }],
+        "responses": { "200": { "description": "Job enqueued with jobId and estimated duration" } }
+      }
+    },
+    "/api/swarm/simulation/{projectId}/status": {
+      "get": {
+        "summary": "Get simulation status",
+        "parameters": [{ "name": "projectId", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }],
+        "responses": { "200": { "description": "Status, progress, current step, simulation runs" } }
+      }
+    },
+    "/api/swarm/simulation/{projectId}/stream": {
+      "get": {
+        "summary": "SSE real-time progress stream",
+        "description": "Server-Sent Events stream. Events: progress (step, pct, loop), done (status). Use EventSource in browser.",
+        "parameters": [{ "name": "projectId", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }],
+        "responses": { "200": { "description": "SSE stream", "content": { "text/event-stream": {} } } }
+      }
+    },
+    "/api/swarm/simulation/{projectId}/stop": {
+      "post": {
+        "summary": "Stop/cancel simulation",
+        "parameters": [{ "name": "projectId", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }],
+        "responses": { "200": { "description": "Stopped" } }
+      }
+    },
+    "/api/swarm/report/{projectId}/report": {
+      "get": {
+        "summary": "Get prediction report",
+        "parameters": [{ "name": "projectId", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }],
+        "responses": { "200": { "description": "Full report with scores, findings, risks, opportunities, recommendations" } }
+      }
+    },
+    "/api/swarm/report/{projectId}/chat": {
+      "get": {
+        "summary": "Get chat messages",
+        "parameters": [{ "name": "projectId", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }],
+        "responses": { "200": { "description": "Chat message history" } }
+      },
+      "post": {
+        "summary": "Send chat message (AI-powered response)",
+        "parameters": [{ "name": "projectId", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }],
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "required": ["message"], "properties": { "message": { "type": "string" } } } } } },
+        "responses": { "200": { "description": "AI response with answer and message object" } }
+      }
+    },
+    "/api/swarm/notifications": {
+      "get": {
+        "summary": "Get notifications",
+        "parameters": [{ "name": "unread", "in": "query", "schema": { "type": "boolean" } }],
+        "responses": { "200": { "description": "Notification list" } }
+      }
+    },
+    "/api/swarm/notifications/read-all": {
+      "post": { "summary": "Mark all notifications as read", "responses": { "200": { "description": "All marked read" } } }
+    },
+    "/api/swarm/notifications/{id}/read": {
+      "patch": {
+        "summary": "Mark notification as read",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }],
+        "responses": { "200": { "description": "Marked read" } }
+      }
+    },
+    "/api/swarm/report/share": {
+      "post": {
+        "summary": "Create share link",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "required": ["reportId"], "properties": { "reportId": { "type": "string", "format": "uuid" }, "expiresInDays": { "type": "integer", "default": 7 } } } } } },
+        "responses": { "200": { "description": "Share token and URL" } }
+      }
+    },
+    "/api/swarm/report/share/{token}": {
+      "get": {
+        "summary": "Access shared report (public, no auth)",
+        "parameters": [{ "name": "token", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "Report data" }, "404": { "description": "Expired or not found" } }
+      }
+    },
+    "/api/swarm/report/export/{projectId}/json": {
+      "get": {
+        "summary": "Export report as JSON",
+        "parameters": [{ "name": "projectId", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }],
+        "responses": { "200": { "description": "JSON file download" } }
+      }
+    },
+    "/api/swarm/report/export/{projectId}/md": {
+      "get": {
+        "summary": "Export report as Markdown",
+        "parameters": [{ "name": "projectId", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }],
+        "responses": { "200": { "description": "Markdown file download" } }
+      }
+    },
+    "/api/swarm/admin/flags": {
+      "get": { "summary": "List all feature flags", "responses": { "200": { "description": "Flag list with current values" } } }
+    },
+    "/api/swarm/admin/flags/{flagKey}": {
+      "put": {
+        "summary": "Set feature flag override",
+        "parameters": [{ "name": "flagKey", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "required": ["value"], "properties": { "value": {} } } } } },
+        "responses": { "200": { "description": "Override set" } }
+      },
+      "delete": {
+        "summary": "Remove feature flag override",
+        "parameters": [{ "name": "flagKey", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "Override removed" } }
+      }
+    }
+  }
+}
