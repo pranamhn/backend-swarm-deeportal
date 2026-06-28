@@ -5443,9 +5443,21 @@ Status: `[ ]` = not started, `[~]` = in progress, `[x]` = done
 ### Priority 3 — Medium (Post-MVP Polish)
 
 ```text
-[~] 54.10 Mode Selection UI — components/swarm/ModeSelector.tsx (frontend repo)
-[~] 54.11 Social Simulation Progress UI (frontend repo)
-[~] 54.12 Live Simulation Observatory (frontend repo)
+[x] 54.10 Mode Selection UI — ✅ DONE (frontend-deeportal repo)
+    - components/swarm/ModeSelector.tsx — dual-card social vs investment toggle ✅
+    - components/swarm/NewSwarmForm.tsx — mode-aware form with conditional fields ✅
+    - Political election config (election type, region, candidates) ✅
+    - Investment config (prediction type, simulation mode, time horizon) ✅
+[x] 54.11 Social Simulation Progress UI — ✅ DONE
+    - components/swarm/SimulationProgress.tsx — SSE-powered step indicators ✅
+    - 7-step pipeline with animated progress bar ✅
+    - Auto-fetch report on simulation completion ✅
+[x] 54.12 Swarm Pages — ✅ DONE
+    - app/(marketing)/swarm/page.tsx — dashboard with dual-mode cards ✅
+    - app/(marketing)/swarm/new/page.tsx — new prediction form page ✅
+    - app/(marketing)/swarm/[projectId]/page.tsx — progress → report flow ✅
+    - components/swarm/SwarmReportView.tsx — tabbed report (findings, risks, chat) ✅
+    - components/swarm/SwarmScoreCard.tsx — sentiment + investment + electability ✅
 
 [x] 54.13 Feature Flags System — lib/feature-flags.ts ✅ DONE
     - 16 feature flags with env var + runtime overrides ✅
